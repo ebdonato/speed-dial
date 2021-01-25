@@ -1,5 +1,5 @@
 <template>
-    <q-page class="flex flex-center">
+    <q-page padding class="flex flex-center">
         <q-header class="bg-transparent" dense>
             <q-toolbar class="row justify-end">
                 <q-btn round @click="signOut" v-if="hasUser" size="xs">
@@ -39,7 +39,6 @@
                 <template v-if="hasUser">
                     <q-btn
                         round
-                        color="203a43"
                         icon="edit"
                         size="xs"
                         @click="toggleEdit = !toggleEdit"
@@ -47,7 +46,6 @@
                     <q-space />
                     <q-btn
                         round
-                        color="203a43"
                         icon="add"
                         size="xs"
                         :to="{ name: 'NewLink' }"

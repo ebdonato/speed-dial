@@ -8,17 +8,17 @@
 
                 <q-card-section>
                     <q-input
-                        v-model="name"
+                        v-model="bookmark.name"
                         label="Nome"
                         label-color="white"
-                        ref="nome"
+                        ref="name"
                         dark
                         :rules="[
                             (val) => val.length > 0 || 'Campo Obrigatório',
                         ]"
                     />
                     <q-input
-                        v-model="url"
+                        v-model="bookmark.url"
                         label="URL"
                         label-color="white"
                         dark
@@ -31,7 +31,9 @@
                 </q-card-section>
 
                 <q-card-actions align="right">
-                    <q-btn outline class="col-3" @click="remove">Excluir</q-btn>
+                    <q-btn outline class="col-3" @click="remove" v-if="id"
+                        >Excluir</q-btn
+                    >
                     <q-btn outline class="col-4" @click="save">OK</q-btn>
                     <q-btn outline class="col-4" @click="cancel"
                         >Cancelar</q-btn
@@ -54,32 +56,53 @@ export default {
     },
     data() {
         return {
-            name: "",
-            url: "",
-            safeExit: false,
+            bookmark: {
+                name: "",
+                url: "",
+            },
+            initialBookmark: {
+                name: "",
+                url: "",
+            },
         }
+    },
+    computed: {
+        isSafe() {
+            return !Object.keys(this.initialBookmark).some(
+                (value) => this.initialBookmark[value] !== this.bookmark[value]
+            )
+        },
     },
     methods: {
         isValidUrl(url) {
             const re = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/g
             return re.test(url)
         },
+        backup() {
+            Object.assign(this.initialBookmark, this.bookmark)
+        },
+        reset() {
+            Object.assign(this.bookmark, this.initialBookmark)
+        },
         exit() {
             this.$router.push({ name: "Index" })
         },
         save() {
-            this.safeExit = true
+            this.$refs.name.validate()
+            this.$refs.url.validate()
 
-            const payload = {
-                id: this.id,
-                bookmark: {
-                    name: this.name,
-                    url: this.url,
-                },
+            if (!this.$refs.name.hasError && !this.$refs.url.hasError) {
+                const payload = {
+                    id: this.id,
+                    bookmark: {
+                        name: this.bookmark.name,
+                        url: this.bookmark.url,
+                    },
+                }
+                this.backup()
+                this.$store.dispatch("config/updateBookmark", payload)
+                this.exit()
             }
-
-            this.$store.dispatch("config/updateBookmark", payload)
-            this.exit()
         },
         cancel() {
             this.exit()
@@ -94,14 +117,14 @@ export default {
                     persistent: true,
                 })
                 .onOk(() => {
-                    this.safeExit = true
                     this.$store.dispatch("config/removeBookmark", this.id)
+                    this.reset()
                     this.exit()
                 })
         },
     },
     beforeRouteLeave(to, from, next) {
-        if (this.safeExit) {
+        if (this.isSafe) {
             next()
         } else {
             this.$q
@@ -124,8 +147,10 @@ export default {
         if (this.id) {
             const bookmark = this.$store.getters["config/getBookmarks"][this.id]
 
-            this.name = bookmark.name
-            this.url = bookmark.url
+            this.bookmark.name = bookmark.name
+            this.bookmark.url = bookmark.url
+
+            this.backup()
         }
     },
 }
