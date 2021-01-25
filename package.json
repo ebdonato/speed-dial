@@ -1,16 +1,19 @@
 {
   "name": "speed-dial",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Speed Dial for Browser New Tabs",
   "productName": "Speed Dial",
   "author": "Eduardo Donato <eduardo.donato@gmail.com>",
   "private": true,
   "scripts": {
-    "test": "echo \"No test specified\" && exit 0"
+    "dev": "quasar dev",
+    "build": "quasar build",
+    "icongenie": "icongenie generate -i ./public/logo.png --skip-trim --theme-color 2c5364"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "core-js": "^3.6.5",
+    "firebase": "^8.2.4",
     "quasar": "^1.0.0"
   },
   "devDependencies": {

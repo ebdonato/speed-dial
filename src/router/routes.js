@@ -4,7 +4,9 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') }
+      { path: '', component: () => import('pages/Index.vue'), name: "Index" },
+      { path: 'edit/:id', component: () => import('pages/EditLink.vue'), props: true, name: "EditLink" },
+      { path: 'new', component: () => import('pages/EditLink.vue'), props: false, name: "NewLink" },
     ]
   },
 
