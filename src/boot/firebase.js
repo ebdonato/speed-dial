@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import firebase from "firebase/app"
 
 // Add the Firebase services that you want to use
@@ -24,7 +23,6 @@ const firebaseDB = firebaseApp.database()
 export { firebaseAuth, firebaseDB }
 
 export default ({ store }) => {
-
 
 	firebaseAuth.onAuthStateChanged(user => {
 

@@ -46,7 +46,7 @@
 
 <script>
 export default {
-    name: "EditLink",
+    name: "PageEditLink",
     props: {
         id: {
             type: String,

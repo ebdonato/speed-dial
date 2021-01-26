@@ -7,14 +7,6 @@
                         <img :src="photoUser" />
                     </q-avatar>
                 </q-btn>
-                <q-btn
-                    v-else
-                    round
-                    color="primary"
-                    icon="login"
-                    size="xs"
-                    @click="signIn"
-                />
             </q-toolbar>
         </q-header>
         <div
@@ -28,11 +20,6 @@
                 :editMode="toggleEdit"
             />
         </div>
-
-        <img
-            src="icons/favicon-96x96.png"
-            v-if="Object.keys(bookmarks).length <= 0"
-        />
 
         <q-footer class="bg-transparent" dense>
             <q-toolbar>
@@ -57,7 +44,6 @@
 </template>
 
 <script>
-import firebase from "firebase/app"
 import { firebaseAuth } from "boot/firebase"
 
 export default {
@@ -85,26 +71,6 @@ export default {
         },
     },
     methods: {
-        signIn() {
-            const provider = new firebase.auth.GoogleAuthProvider()
-
-            firebaseAuth
-                .signInWithPopup(provider)
-                .then((result) => {
-                    this.$q.notify({
-                        message: `Olá ${result.user.displayName}`,
-                        color: "primary",
-                    })
-                })
-                .catch((error) => {
-                    this.$q.notify({
-                        message: error.message,
-                        caption: error.code,
-                        color: "negative",
-                    })
-                    console.error(error)
-                })
-        },
         signOut() {
             firebaseAuth
                 .signOut()
@@ -113,6 +79,7 @@ export default {
                         message: "Tchau!",
                         color: "positive",
                     })
+                    this.$router.push({ name: "Auth" })
                 })
                 .catch((error) => {
                     console.error(error)

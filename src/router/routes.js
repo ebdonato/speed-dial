@@ -7,6 +7,7 @@ const routes = [
       { path: '', component: () => import('pages/Index.vue'), name: "Index" },
       { path: 'edit/:id', component: () => import('pages/EditLink.vue'), props: true, name: "EditLink" },
       { path: 'new', component: () => import('pages/EditLink.vue'), props: false, name: "NewLink" },
+      { path: 'auth', component: () => import('pages/Auth.vue'), props: false, name: "Auth" },
     ]
   },
 

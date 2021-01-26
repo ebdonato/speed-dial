@@ -1,15 +1,19 @@
 import Vue from 'vue'
+import { LocalStorage } from 'quasar'
 
 export function addBookmark(state, payload) {
     Vue.set(state.bookmarks, payload.id, payload.bookmark)
+    LocalStorage.set("currentBookmarks", state.bookmarks)
 }
 
 export function updateBookmark(state, payload) {
     Object.assign(state.bookmarks[payload.id], payload.bookmark)
+    LocalStorage.set("currentBookmarks", state.bookmarks)
 }
 
 export function deleteBookmark(state, id) {
     Vue.delete(state.bookmarks, id)
+    LocalStorage.set("currentBookmarks", state.bookmarks)
 }
 
 export function setBookmarksLoaded(state, value) {
@@ -18,6 +22,12 @@ export function setBookmarksLoaded(state, value) {
 
 export function clearBookmarks(state) {
     state.bookmarks = {}
+    LocalStorage.set("currentBookmarks", state.bookmarks)
+}
+
+export function updateBookmarks(state, payload) {
+    Object.assign(state.bookmarks, payload)
+    LocalStorage.set("currentBookmarks", state.bookmarks)
 }
 
 export function setUser(state, user) {

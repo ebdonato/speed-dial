@@ -1,21 +1,28 @@
-import { uid, Notify } from 'quasar'
+import { uid, Notify, LocalStorage } from 'quasar'
 import { firebaseDB, firebaseAuth } from "boot/firebase"
 
 export function setUser({ commit, dispatch }, user) {
-
-    //if (!(Object.keys(user).length === 0 && user.constructor === Object)) {
     dispatch("loadBookmarks")
-    //}
 
     commit("setUser", user)
+
+    LocalStorage.set("currentUser", user)
+
+    this.$router.push({ name: "Index" })
 }
 
+export function setBookmarks({ commit }, bookmarks) {
+    commit('setBookmarksLoaded', true)
+    commit('updateBookmarks', bookmarks)
+    LocalStorage.set("currentBookmarks", bookmarks)
+}
 
 export function loadBookmarks({ commit }) {
 
     if (!firebaseAuth.currentUser) {
         commit('setBookmarksLoaded', false)
         commit('clearBookmarks')
+        LocalStorage.set("currentBookmarks", {})
         return
     }
 

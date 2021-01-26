@@ -18,6 +18,7 @@ module.exports = function (/* ctx */) {
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/boot-files
     boot: [
+      'router-auth',
       'firebase',
     ],
 
@@ -31,7 +32,7 @@ module.exports = function (/* ctx */) {
       // 'ionicons-v4',
       // 'mdi-v5',
       // 'fontawesome-v5',
-      // 'eva-icons',
+      'eva-icons',
       // 'themify',
       // 'line-awesome',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
@@ -91,7 +92,7 @@ module.exports = function (/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: ['Notify', 'Dialog']
+      plugins: ['Notify', 'Dialog', 'LocalStorage']
     },
 
     // animations: 'all', // --- includes all animations
@@ -105,7 +106,7 @@ module.exports = function (/* ctx */) {
 
     // https://quasar.dev/quasar-cli/developing-pwa/configuring-pwa
     pwa: {
-      workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
+      workboxPluginMode: 'InjectManifest', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
         name: `Speed Dial`,
