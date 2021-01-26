@@ -83,22 +83,8 @@ export default {
             this.signIn(provider)
         },
         signIn(provider) {
-            firebaseAuth
-                .signInWithPopup(provider)
-                .then((result) => {
-                    this.$q.notify({
-                        message: `Olá ${result.user.displayName || ""}`,
-                        color: "primary",
-                    })
-                })
-                .catch((error) => {
-                    this.$q.notify({
-                        message: error.message,
-                        caption: error.code,
-                        color: "negative",
-                    })
-                    console.error(error)
-                })
+            this.$q.localStorage.set("waitingAuth", true)
+            firebaseAuth.signInWithRedirect(provider)
         },
         signOut() {
             firebaseAuth

@@ -16,10 +16,6 @@ export function deleteBookmark(state, id) {
     LocalStorage.set("currentBookmarks", state.bookmarks)
 }
 
-export function setBookmarksLoaded(state, value) {
-    state.bookmarksLoaded = value
-}
-
 export function clearBookmarks(state) {
     state.bookmarks = {}
     LocalStorage.set("currentBookmarks", state.bookmarks)
@@ -34,4 +30,12 @@ export function updateBookmarks(state, payload) {
 export function setUser(state, user) {
     state.user = {}
     state.user = { ...user }
+}
+
+export function setEditMode(state, value) {
+    state.editMode = !!value
+}
+
+export function setShowFooterButtons(state, value) {
+    state.showFooterButtons = !!value
 }

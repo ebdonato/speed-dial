@@ -1,7 +1,8 @@
 export default function () {
 	return {
 		bookmarks: {},
-		bookmarksLoaded: false,
-		user: null
+		user: null,
+		editMode: false,
+		showFooterButtons: false,
 	}
 }

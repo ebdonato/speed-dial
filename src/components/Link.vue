@@ -5,6 +5,8 @@
                 type="a"
                 :href="parseUrl(link.url)"
                 class="text-white std-btn"
+                :aria-label="link.name"
+                no-caps
                 v-touch-hold.mouse="handleHold"
             >
                 <q-avatar size="1rem" square>
@@ -17,9 +19,10 @@
 
         <template v-else>
             <q-btn
-                :to="'edit/' + id"
+                @click="edit"
                 class="text-white std-btn"
                 :aria-label="link.name"
+                no-caps
             >
                 <q-avatar
                     square
@@ -78,8 +81,13 @@ export default {
         parseUrl(url) {
             return url.startsWith("http") ? url : `http://${url}`
         },
-        handleHold() {
-            console.log(this.id)
+        handleHold({ evt }) {
+            evt.preventDefault()
+            evt.stopPropagation()
+            this.edit()
+        },
+        edit() {
+            this.$store.dispatch("config/setEditMode", false)
             this.$router.push(`edit/${this.id}`)
         },
     },

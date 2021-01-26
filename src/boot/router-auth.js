@@ -9,6 +9,8 @@ export default ({ router, store }) => {
 
   router.beforeEach((to, from, next) => {
 
+    store.dispatch("config/setShowFooterButtons", to.name == "Index")
+
     const loggedIn = !!store.getters["config/hasUser"]
 
     if (loggedIn || to.name == "Auth") {

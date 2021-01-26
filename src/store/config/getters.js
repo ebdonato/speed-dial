@@ -9,3 +9,12 @@ export function hasUser(state) {
 export function getUser(state) {
     return state.user
 }
+
+export function isEditMode(state) {
+    return state.editMode
+}
+
+export function showFooterButtons(state) {
+    return state.showFooterButtons
+}
+

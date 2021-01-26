@@ -1,28 +1,22 @@
-import { uid, Notify, LocalStorage } from 'quasar'
+import { uid, Notify, LocalStorage, Loading } from 'quasar'
 import { firebaseDB, firebaseAuth } from "boot/firebase"
 
-export function setUser({ commit, dispatch }, user) {
-    dispatch("loadBookmarks")
-
+export function setUser({ commit }, user) {
     commit("setUser", user)
-
     LocalStorage.set("currentUser", user)
 }
 
 export function setBookmarks({ commit }, bookmarks) {
-    commit('setBookmarksLoaded', true)
     commit('updateBookmarks', bookmarks)
     LocalStorage.set("currentBookmarks", bookmarks)
 }
 
-export function loadBookmarks({ commit }) {
+export function unloadBookmarks({ commit }) {
+    commit('clearBookmarks')
+    LocalStorage.set("currentBookmarks", {})
+}
 
-    if (!firebaseAuth.currentUser) {
-        commit('setBookmarksLoaded', false)
-        commit('clearBookmarks')
-        LocalStorage.set("currentBookmarks", {})
-        return
-    }
+export function loadBookmarks({ commit }) {
 
     const user = firebaseAuth.currentUser.uid
 
@@ -31,10 +25,11 @@ export function loadBookmarks({ commit }) {
     ref.once('value', (snapshot) => {
         commit('updateBookmarks', snapshot.val())
 
-        commit('setBookmarksLoaded', true)
+        LocalStorage.set("waitingAuth", false)
+        Loading.hide()
+
     }, error => {
         console.error(error)
-        commit('setBookmarksLoaded', false)
     })
 
     ref.on('child_added', snapshot => {
@@ -105,3 +100,14 @@ export function updateBookmark({ }, payload) {
 
 }
 
+export function toggleEditMode({ commit, state }) {
+    commit("setEditMode", !state.editMode)
+}
+
+export function setEditMode({ commit }, value) {
+    commit("setEditMode", value)
+}
+
+export function setShowFooterButtons({ commit }, value) {
+    commit("setShowFooterButtons", value)
+}
