@@ -1,31 +1,51 @@
 <template>
     <q-page class="flex flex-center">
         <div class="column items-center" v-if="!hasUser">
-            <img src="icons/favicon-96x96.png" />
+            <img src="icons/favicon-96x96.png" alt="Logo" />
             <div class="q-mt-sm q-gutter-md">
                 <q-btn
                     round
                     color="primary"
-                    icon="eva-facebook"
+                    icon="ion-logo-github"
+                    aria-label="Login com Github"
+                    @click="githubSignIn"
+                />
+                <q-btn
+                    round
+                    color="primary"
+                    icon="ion-logo-google"
+                    aria-label="Login com Google"
+                    @click="googleSignIn"
+                />
+                <q-btn
+                    round
+                    color="primary"
+                    icon="ion-logo-facebook"
+                    aria-label="Login com Facebook"
                     @click="facebookSignIn"
                 />
                 <q-btn
                     round
                     color="primary"
-                    icon="eva-google"
-                    @click="googleSignIn"
+                    icon="ion-logo-yahoo"
+                    aria-label="Login com Yahoo"
+                    @click="yahootSignIn"
                 />
             </div>
         </div>
         <div class="column items-center q-gutter-md" v-else>
             <div class="text-h5 text-white">{{ displayNameUser }}</div>
-            <img :src="photoUser" />
+            <img
+                :src="photoUser"
+                style="border-radius: 5px; max-height: 96px"
+            />
             <q-btn
                 outline
                 label="Início"
                 color="white"
                 :to="{ name: 'Index' }"
                 class="small-btn"
+                aria-label="Links"
             />
             <q-btn
                 outline
@@ -33,6 +53,7 @@
                 color="white"
                 @click="signOut"
                 class="small-btn"
+                aria-label="Logout"
             />
         </div>
     </q-page>
@@ -49,8 +70,16 @@ export default {
             const provider = new firebase.auth.FacebookAuthProvider()
             this.signIn(provider)
         },
+        githubSignIn() {
+            const provider = new firebase.auth.GithubAuthProvider()
+            this.signIn(provider)
+        },
         googleSignIn() {
             const provider = new firebase.auth.GoogleAuthProvider()
+            this.signIn(provider)
+        },
+        yahootSignIn() {
+            const provider = new firebase.auth.OAuthProvider("yahoo.com")
             this.signIn(provider)
         },
         signIn(provider) {
@@ -58,7 +87,7 @@ export default {
                 .signInWithPopup(provider)
                 .then((result) => {
                     this.$q.notify({
-                        message: `Olá ${result.user.displayName}`,
+                        message: `Olá ${result.user.displayName || ""}`,
                         color: "primary",
                     })
                 })

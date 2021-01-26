@@ -22,15 +22,18 @@ const firebaseDB = firebaseApp.database()
 
 export { firebaseAuth, firebaseDB }
 
-export default ({ store }) => {
+export default ({ store, router }) => {
 
 	firebaseAuth.onAuthStateChanged(user => {
 
 		if (user) {
 			const { displayName, uid, photoURL } = user
 			store.dispatch("config/setUser", { displayName, uid, photoURL })
+			!router.currentRoute.name || router.currentRoute.name == "Index" || router.push({ name: "Index" })
+
 		} else {
 			store.dispatch("config/setUser", {})
+			!router.currentRoute.name || router.currentRoute.name == "Auth" || router.push({ name: "Auth" })
 		}
 	})
 }

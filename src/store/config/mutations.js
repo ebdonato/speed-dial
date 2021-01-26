@@ -26,6 +26,7 @@ export function clearBookmarks(state) {
 }
 
 export function updateBookmarks(state, payload) {
+    state.bookmarks = {}
     Object.assign(state.bookmarks, payload)
     LocalStorage.set("currentBookmarks", state.bookmarks)
 }

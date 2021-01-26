@@ -7,8 +7,6 @@ export function setUser({ commit, dispatch }, user) {
     commit("setUser", user)
 
     LocalStorage.set("currentUser", user)
-
-    this.$router.push({ name: "Index" })
 }
 
 export function setBookmarks({ commit }, bookmarks) {
@@ -30,7 +28,9 @@ export function loadBookmarks({ commit }) {
 
     const ref = firebaseDB.ref(`bookmarks/${user}`)
 
-    ref.once('value', () => {
+    ref.once('value', (snapshot) => {
+        commit('updateBookmarks', snapshot.val())
+
         commit('setBookmarksLoaded', true)
     }, error => {
         console.error(error)
@@ -80,9 +80,6 @@ export function removeBookmark({ }, id) {
 }
 
 export function updateBookmark({ }, payload) {
-
-    console.log("updateBookmark")
-
     const user = firebaseAuth.currentUser.uid
 
     let message = "atualizado"

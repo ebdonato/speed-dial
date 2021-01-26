@@ -6,39 +6,47 @@
                     <div class="text-h4">Link</div>
                 </q-card-section>
 
-                <q-card-section>
-                    <q-input
-                        v-model="bookmark.name"
-                        label="Nome"
-                        label-color="white"
-                        ref="name"
-                        dark
-                        :rules="[
-                            (val) => val.length > 0 || 'Campo Obrigatório',
-                        ]"
-                    />
-                    <q-input
-                        v-model="bookmark.url"
-                        label="URL"
-                        label-color="white"
-                        dark
-                        ref="url"
-                        :rules="[
-                            (val) => val.length > 0 || 'Campo Obrigatório',
-                            (val) => isValidUrl(val) || 'URL Inválida',
-                        ]"
-                    />
-                </q-card-section>
+                <q-form @submit="save" @reset="reset" ref="formEditLink">
+                    <q-card-section>
+                        <q-input
+                            v-model="bookmark.name"
+                            label="Nome"
+                            label-color="white"
+                            ref="name"
+                            dark
+                            lazy-rules
+                            :rules="[
+                                (val) => val.length > 0 || 'Campo Obrigatório',
+                            ]"
+                        />
+                        <q-input
+                            v-model="bookmark.url"
+                            label="URL"
+                            label-color="white"
+                            dark
+                            lazy-rules
+                            ref="url"
+                            :rules="[
+                                (val) => val.length > 0 || 'Campo Obrigatório',
+                                (val) => isValidUrl(val) || 'URL Inválida',
+                            ]"
+                        />
+                    </q-card-section>
 
-                <q-card-actions align="right">
-                    <q-btn outline class="col-3" @click="remove" v-if="id"
-                        >Excluir</q-btn
-                    >
-                    <q-btn outline class="col-4" @click="save">OK</q-btn>
-                    <q-btn outline class="col-4" @click="cancel"
-                        >Cancelar</q-btn
-                    >
-                </q-card-actions>
+                    <q-card-actions align="right">
+                        <q-btn
+                            outline
+                            class="col-3"
+                            @click.prevent="remove"
+                            v-if="id"
+                            >Excluir</q-btn
+                        >
+                        <q-btn outline class="col-4" type="submit">OK</q-btn>
+                        <q-btn outline class="col-4" @click.prevent="cancel"
+                            >Cancelar</q-btn
+                        >
+                    </q-card-actions>
+                </q-form>
             </q-card>
         </div>
     </q-page>
@@ -88,21 +96,21 @@ export default {
             this.$router.push({ name: "Index" })
         },
         save() {
-            this.$refs.name.validate()
-            this.$refs.url.validate()
+            // this.$refs.name.validate()
+            // this.$refs.url.validate()
 
-            if (!this.$refs.name.hasError && !this.$refs.url.hasError) {
-                const payload = {
-                    id: this.id,
-                    bookmark: {
-                        name: this.bookmark.name,
-                        url: this.bookmark.url,
-                    },
-                }
-                this.backup()
-                this.$store.dispatch("config/updateBookmark", payload)
-                this.exit()
+            // if (!this.$refs.name.hasError && !this.$refs.url.hasError) {
+            const payload = {
+                id: this.id,
+                bookmark: {
+                    name: this.bookmark.name,
+                    url: this.bookmark.url,
+                },
             }
+            this.backup()
+            this.$store.dispatch("config/updateBookmark", payload)
+            this.exit()
+            //}
         },
         cancel() {
             this.exit()
@@ -110,6 +118,7 @@ export default {
         remove() {
             this.$q
                 .dialog({
+                    dark: true,
                     title: "Confirme",
                     message:
                         "Tem certeza que deseja excluir? Não poderá ser desfeito.",
@@ -129,6 +138,7 @@ export default {
         } else {
             this.$q
                 .dialog({
+                    dark: true,
                     title: "Confirme",
                     message:
                         "Alterações não salvas serão perdidas. Tem certeza que deseja sair?",

@@ -5,6 +5,7 @@
                 type="a"
                 :href="parseUrl(link.url)"
                 class="text-white std-btn"
+                v-touch-hold.mouse="handleHold"
             >
                 <q-avatar size="1rem" square>
                     <img :src="getIconUrl(link.url)" :alt="link.url" />
@@ -15,7 +16,11 @@
         </template>
 
         <template v-else>
-            <q-btn :to="'edit/' + id" class="text-white std-btn">
+            <q-btn
+                :to="'edit/' + id"
+                class="text-white std-btn"
+                :aria-label="link.name"
+            >
                 <q-avatar
                     square
                     color="red"
@@ -72,6 +77,10 @@ export default {
         },
         parseUrl(url) {
             return url.startsWith("http") ? url : `http://${url}`
+        },
+        handleHold() {
+            console.log(this.id)
+            this.$router.push(`edit/${this.id}`)
         },
     },
 }
