@@ -26,6 +26,6 @@ export default {
     height: 100%
     width: 100%
     background: $primary
-    background: -webkit-linear-gradient(to bottom, $primary, $secondary, $dark)
-    background: linear-gradient(to bottom, $primary, $secondary, $dark )
+    background: -webkit-linear-gradient(to right bottom, $accent, $primary, $secondary)
+    background: linear-gradient(to right bottom, $accent, $primary, $secondary )
 </style>

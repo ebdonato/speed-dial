@@ -6,7 +6,7 @@
                     flat
                     label="Speed Dial 1982"
                     no-caps
-                    text-color="secondary"
+                    text-color="grey-8"
                     @click="autoClose"
                 />
                 <q-space />
