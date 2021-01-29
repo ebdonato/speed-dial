@@ -15,9 +15,7 @@ export default ({ router, store }) => {
 
     if (loggedIn || to.name == "Auth" || to.name == "ExternalIndex") {
       next()
-      console.log("ok")
     } else {
-      console.log("redirect")
       next({ name: "Auth" })
     }
   })

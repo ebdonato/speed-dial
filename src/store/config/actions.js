@@ -9,7 +9,6 @@ export function uploadUserAvatar({ commit }, avatarBlob) {
     imagesRef.put(avatarBlob)
         .then(snapshot => snapshot.ref.getDownloadURL())
         .then((url) => {
-            console.log(url)
             commit("setUserAvatarUrl", url)
         })
         .catch(err => {
@@ -34,20 +33,90 @@ export function loadUserAvatar({ commit }) {
 
 export function loadAvatar({ commit }, uid) {
 
+    const updateIndexedDB = (info) => {
+        const externalInfo = LocalStorage.getItem(info.uid) ?? {}
+        externalInfo.url = info.url
+        LocalStorage.set(info.uid, externalInfo)
+    }
+
+    const payload = {}
+
+    payload.uid = uid
+
     const ref = firebaseStorage.ref(`${uid}`)
     ref.child('logo.jpg').getDownloadURL()
         .then((url) => {
-            commit("setExternalAvatarUrl", url)
+
+            payload.url = url
         })
         .catch(err => {
             console.error(err)
-            commit("setExternalAvatarUrl", '')
+            payload.url = ''
+        })
+        .finally(() => {
+            commit("setExternalAvatarUrl", payload.url)
+            updateIndexedDB(payload)
         })
 }
 
 export function setUser({ commit }, user) {
     commit("setUser", user)
 }
+
+export function loadConfig({ commit }, uid = '') {
+    const updateIndexedDB = (info) => {
+        const externalInfo = LocalStorage.getItem(info.uid) ?? {}
+        externalInfo.config = info.config
+        LocalStorage.set(info.uid, externalInfo)
+    }
+
+
+    const userUid = uid || firebaseAuth.currentUser.uid
+
+    let config = {}
+
+    const ref = firebaseDB.ref(`config/${userUid}`)
+    ref.once('value')
+        .then((snapshot) => {
+            config = { ...snapshot.val() }
+        })
+        .catch(error => {
+            console.error(error)
+        })
+        .finally(() => {
+            if (uid) {
+                commit('updateExternalConfig', config)
+                updateIndexedDB({
+                    uid,
+                    config
+                })
+            } else {
+                commit('updateConfig', config)
+            }
+        })
+
+}
+
+export function updateConfig({ commit }, config) {
+    const user = firebaseAuth.currentUser.uid
+
+    const ref = firebaseDB.ref(`config/${user}`)
+
+    ref.set(config, error => {
+        if (error) {
+            console.error(error)
+        }
+        else {
+            Notify.create({
+                message: "Configurações atualizadas",
+                color: 'primary'
+            })
+            commit('updateConfig', config)
+        }
+    })
+
+}
+
 
 export function setBookmarks({ commit }, bookmarks) {
     commit('updateBookmarks', bookmarks)
@@ -57,19 +126,32 @@ export function unloadBookmarks({ commit }) {
     commit('clearBookmarks')
 }
 
-export function unloadExternalBookmarks({ commit }) {
-    commit('clearExternalBookmarks')
-}
-
 export function loadExternalBookmarks({ commit }, uid) {
 
+    const updateIndexedDB = (info) => {
+        const externalInfo = LocalStorage.getItem(info.uid) ?? {}
+        externalInfo.bookmarks = info.bookmarks
+        LocalStorage.set(info.uid, externalInfo)
+    }
+
+    const payload = {}
+
+    payload.uid = uid
+
     const ref = firebaseDB.ref(`bookmarks/${uid}`)
-    ref.once('value', (snapshot) => {
-        commit('updateExternalBookmarks', snapshot.val())
-    }, error => {
-        commit('updateExternalBookmarks', {})
-        console.error(error)
-    })
+    ref.once('value')
+        .then((snapshot) => {
+            payload.bookmarks = snapshot.val()
+
+        })
+        .catch(error => {
+            console.error(error)
+            payload.bookmarks = {}
+        })
+        .finally(() => {
+            commit('updateExternalBookmarks', payload.bookmarks)
+            updateIndexedDB(payload)
+        })
 }
 
 export function loadBookmarks({ commit }) {

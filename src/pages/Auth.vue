@@ -63,7 +63,7 @@
                 outline
                 label="Configurações"
                 color="white"
-                disable
+                :to="{name: 'Config'}"
                 class="std-btn"
                 aria-label="Configurações"
             />

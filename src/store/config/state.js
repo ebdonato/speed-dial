@@ -1,9 +1,11 @@
 export default function () {
 	return {
-		bookmarks: {},
 		externalBookmarks: '',
 		externalAvatarUrl: '',
+		externalConfig: null,
+		bookmarks: {},
 		user: null,
+		config: null,
 		editMode: false,
 		showFooterButtons: false,
 	}

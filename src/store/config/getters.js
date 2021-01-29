@@ -25,3 +25,10 @@ export function showFooterButtons(state) {
     return state.showFooterButtons
 }
 
+export function getConfig(state) {
+    return state.config
+}
+
+export function getExternalConfig(state) {
+    return state.externalConfig
+}

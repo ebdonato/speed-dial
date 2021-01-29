@@ -33,6 +33,12 @@ See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
         ".read": true,
         ".write": "auth.uid == $uid"
       }
+    },
+    "config": {
+       "$uid": {
+        ".read": true,
+        ".write": "auth.uid == $uid"
+      }
     }
   }
 }

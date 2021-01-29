@@ -1,20 +1,26 @@
 <template>
     <q-page padding class="flex flex-center">
         <div
-            class="flex flex-center q-gutter-sm"
-            v-if="!(bookmarks == '' || avatar == '')"
+            class="flex flex-center column q-gutter-sm"
+            v-if="!(bookmarks == '' && avatar == '')"
         >
+            <div class="text-white text-h4">{{ config.title }}</div>
+
             <q-img
                 :src="avatar"
                 style="border-radius: 100px; max-width: 200px"
                 spinner-color="white"
             />
+
+            <div class="text-grey-6 text-h5">{{ config.subtitle }}</div>
+
             <q-btn
                 v-if="Object.keys(bookmarks).length <= 0"
                 class="text-white std-btn q-mt-sm"
             >
                 <div class="q-ml-sm col-grow">Nenhum Link</div>
             </q-btn>
+
             <div
                 class="flex justify-center items-center content-center q-gutter-md q-mt-sm"
             >
@@ -49,10 +55,31 @@ export default {
         avatar() {
             return this.$store.getters["config/getExternalAvatarUrl"]
         },
+        config() {
+            return this.$store.getters["config/getExternalConfig"]
+        },
     },
     mounted() {
+        const externalInfo = this.$q.localStorage.getItem(this.id)
+
+        if (externalInfo) {
+            this.$store.commit(
+                "config/setExternalAvatarUrl",
+                externalInfo?.url ?? ""
+            )
+            this.$store.commit(
+                "config/updateExternalBookmarks",
+                externalInfo?.bookmarks ?? ""
+            )
+            this.$store.commit(
+                "config/updateExternalConfig",
+                externalInfo?.config ?? {}
+            )
+        }
+
         this.$store.dispatch("config/loadExternalBookmarks", this.id)
         this.$store.dispatch("config/loadAvatar", this.id)
+        this.$store.dispatch("config/loadConfig", this.id)
     },
 }
 </script>

@@ -36,6 +36,7 @@ export default ({ store, router }) => {
 			store.dispatch("config/setUser", { displayName, uid, photoURL })
 			store.dispatch("config/loadBookmarks")
 			store.dispatch("config/loadUserAvatar")
+			store.dispatch("config/loadConfig")
 
 			!router.currentRoute.name || ["Index", "ExternalIndex"].includes(router.currentRoute.name) || router.push({ name: "Index" })
 

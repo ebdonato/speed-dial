@@ -27,15 +27,6 @@ export function updateBookmarks(state, payload) {
     LocalStorage.set("currentBookmarks", state.bookmarks)
 }
 
-export function clearExternalBookmarks(state) {
-    state.externalBookmarks = {}
-}
-
-export function updateExternalBookmarks(state, payload) {
-    state.externalBookmarks = {}
-    Object.assign(state.externalBookmarks, payload)
-}
-
 export function setUser(state, user) {
     state.user = {}
     state.user = { ...user }
@@ -54,6 +45,22 @@ export function setUserAvatarUrl(state, avatarUrl) {
     state.user = { ...state.user, avatarUrl }
     LocalStorage.set("currentUser", state.user)
 }
-export function setExternalAvatarUrl(state, avatarUrl) {
-    state.externalAvatarUrl = avatarUrl
+
+export function updateExternalBookmarks(state, bookmarks) {
+    state.externalBookmarks = {}
+    Object.assign(state.externalBookmarks, bookmarks)
+}
+
+export function setExternalAvatarUrl(state, url) {
+    state.externalAvatarUrl = url
+}
+
+export function updateConfig(state, config) {
+    state.config = {}
+    Object.assign(state.config, config)
+}
+
+export function updateExternalConfig(state, config) {
+    state.externalConfig = {}
+    Object.assign(state.externalConfig, config)
 }

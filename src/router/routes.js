@@ -13,7 +13,7 @@ const routes = [
     ]
   },
   {
-    path: '/u',
+    path: '/uid',
     component: () => import('layouts/ExternalLayout.vue'),
     children: [
       { path: ':id', component: () => import('pages/ExternalIndex.vue'), name: "ExternalIndex", props: true },
