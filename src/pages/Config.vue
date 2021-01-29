@@ -16,6 +16,23 @@
                     v-model="subtitle"
                     label="Subtítulo Externo"
                 />
+                <q-input
+                    dark
+                    filled
+                    readonly
+                    v-model="externalLink"
+                    label="Link Externo"
+                >
+                    <template v-slot:after>
+                        <q-btn
+                            round
+                            dense
+                            flat
+                            icon="content_copy"
+                            @click="copyLink"
+                        />
+                    </template>
+                </q-input>
             </q-card-section>
 
             <q-separator dark />
@@ -29,6 +46,7 @@
 </template>
 
 <script>
+import { copyToClipboard } from "quasar"
 export default {
     name: "PageConfig",
     data() {
@@ -36,6 +54,12 @@ export default {
             title: "",
             subtitle: "",
         }
+    },
+    computed: {
+        externalLink() {
+            const uid = this.$store.getters["config/getUser"].uid
+            return `${window.location.origin}/#/uid/${uid}`
+        },
     },
     methods: {
         save() {
@@ -46,6 +70,22 @@ export default {
 
             this.$store.dispatch("config/updateConfig", config)
         },
+        copyLink() {
+            copyToClipboard(this.externalLink)
+                .then(() => {
+                    this.$q.notify({
+                        message: "Link copiado para a área de transferência!",
+                        color: "positive",
+                    })
+                })
+                .catch((error) => {
+                    console.error(error)
+                    this.$q.notify({
+                        message: "Algo deu errado",
+                        color: "negative",
+                    })
+                })
+        },
     },
     mounted() {
         const config = this.$store.getters["config/getConfig"]
@@ -55,6 +95,3 @@ export default {
     },
 }
 </script>
-
-<style>
-</style>
