@@ -13,9 +13,11 @@ export default ({ router, store }) => {
 
     const loggedIn = !!store.getters["config/hasUser"]
 
-    if (loggedIn || to.name == "Auth") {
+    if (loggedIn || to.name == "Auth" || to.name == "ExternalIndex") {
       next()
+      console.log("ok")
     } else {
+      console.log("redirect")
       next({ name: "Auth" })
     }
   })

@@ -1,0 +1,58 @@
+<template>
+    <q-page padding class="flex flex-center">
+        <div
+            class="flex flex-center q-gutter-sm"
+            v-if="!(bookmarks == '' || avatar == '')"
+        >
+            <q-img
+                :src="avatar"
+                style="border-radius: 100px; max-width: 200px"
+                spinner-color="white"
+            />
+            <q-btn
+                v-if="Object.keys(bookmarks).length <= 0"
+                class="text-white std-btn q-mt-sm"
+            >
+                <div class="q-ml-sm col-grow">Nenhum Link</div>
+            </q-btn>
+            <div
+                class="flex justify-center items-center content-center q-gutter-md q-mt-sm"
+            >
+                <Link
+                    v-for="(bookmark, key) in bookmarks"
+                    :key="key"
+                    :link="bookmark"
+                    :id="key"
+                />
+            </div>
+        </div>
+        <q-spinner color="white" size="3em" :thickness="10" v-else />
+    </q-page>
+</template>
+
+<script>
+export default {
+    name: "ExternalIndex",
+    props: {
+        id: {
+            type: String,
+            required: true,
+        },
+    },
+    components: {
+        Link: () => import("components/Link"),
+    },
+    computed: {
+        bookmarks() {
+            return this.$store.getters["config/getExternalBookmarks"]
+        },
+        avatar() {
+            return this.$store.getters["config/getExternalAvatarUrl"]
+        },
+    },
+    mounted() {
+        this.$store.dispatch("config/loadExternalBookmarks", this.id)
+        this.$store.dispatch("config/loadAvatar", this.id)
+    },
+}
+</script>

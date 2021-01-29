@@ -34,25 +34,45 @@
             </div>
         </div>
         <div class="column items-center q-gutter-md" v-else>
-            <div class="text-h5 text-white">{{ displayNameUser }}</div>
-            <img
-                :src="photoUser"
-                style="border-radius: 5px; max-height: 96px"
-            />
+            <div class="text-h5 text-white">Olá {{ displayNameUser }}</div>
+            <q-img
+                :src="avatar"
+                style="border-radius: 100px; max-width: 200px"
+                spinner-color="white"
+            >
+                <div class="absolute-bottom text-subtitle1 text-center">
+                    <q-btn
+                        round
+                        flat
+                        icon="add"
+                        size="sm"
+                        :to="{ name: 'Avatar' }"
+                        aria-label="Definir Avatar"
+                    />
+                </div>
+            </q-img>
             <q-btn
                 outline
                 label="Início"
                 color="white"
                 :to="{ name: 'Index' }"
-                class="small-btn"
-                aria-label="Links"
+                class="std-btn"
+                aria-label="Início"
+            />
+            <q-btn
+                outline
+                label="Configurações"
+                color="white"
+                disable
+                class="std-btn"
+                aria-label="Configurações"
             />
             <q-btn
                 outline
                 label="Sair"
                 color="white"
                 @click="signOut"
-                class="small-btn"
+                class="std-btn"
                 aria-label="Logout"
             />
         </div>
@@ -65,6 +85,11 @@ import { firebaseAuth } from "boot/firebase"
 
 export default {
     nome: "PageAuth",
+    data() {
+        return {
+            sampleUrl: `https://placeimg.com/200/200/nature?t=${Math.random()}`,
+        }
+    },
     methods: {
         facebookSignIn() {
             const provider = new firebase.auth.FacebookAuthProvider()
@@ -109,17 +134,14 @@ export default {
         hasUser() {
             return this.$store.getters["config/hasUser"]
         },
-        photoUser() {
+        avatar() {
             return (
-                this.$store.getters["config/getUser"]?.photoURL ||
-                "https://cdn.quasar.dev/img/avatar2.jpg"
+                this.$store.getters["config/getUser"].avatarUrl ||
+                this.sampleUrl
             )
         },
         displayNameUser() {
-            return (
-                this.$store.getters["config/getUser"]?.displayName ||
-                "Nome do Usuário"
-            )
+            return this.$store.getters["config/getUser"]?.displayName || ""
         },
     },
 }

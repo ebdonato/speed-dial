@@ -1,19 +1,75 @@
 import { uid, Notify, LocalStorage, Loading } from 'quasar'
-import { firebaseDB, firebaseAuth } from "boot/firebase"
+import { firebaseDB, firebaseAuth, firebaseStorage } from "boot/firebase"
+
+export function uploadUserAvatar({ commit }, avatarBlob) {
+    const user = firebaseAuth.currentUser.uid
+    const ref = firebaseStorage.ref(`${user}`)
+    const imagesRef = ref.child('logo.jpg')
+
+    imagesRef.put(avatarBlob)
+        .then(snapshot => snapshot.ref.getDownloadURL())
+        .then((url) => {
+            console.log(url)
+            commit("setUserAvatarUrl", url)
+        })
+        .catch(err => {
+            console.error(err)
+            commit("setUserAvatarUrl", '')
+        })
+
+}
+
+export function loadUserAvatar({ commit }) {
+    const uid = firebaseAuth.currentUser.uid
+    const ref = firebaseStorage.ref(`${uid}`)
+    ref.child('logo.jpg').getDownloadURL()
+        .then((url) => {
+            commit("setUserAvatarUrl", url)
+        })
+        .catch(err => {
+            console.error(err)
+            commit("setUserAvatarUrl", '')
+        })
+}
+
+export function loadAvatar({ commit }, uid) {
+
+    const ref = firebaseStorage.ref(`${uid}`)
+    ref.child('logo.jpg').getDownloadURL()
+        .then((url) => {
+            commit("setExternalAvatarUrl", url)
+        })
+        .catch(err => {
+            console.error(err)
+            commit("setExternalAvatarUrl", '')
+        })
+}
 
 export function setUser({ commit }, user) {
     commit("setUser", user)
-    LocalStorage.set("currentUser", user)
 }
 
 export function setBookmarks({ commit }, bookmarks) {
     commit('updateBookmarks', bookmarks)
-    LocalStorage.set("currentBookmarks", bookmarks)
 }
 
 export function unloadBookmarks({ commit }) {
     commit('clearBookmarks')
-    LocalStorage.set("currentBookmarks", {})
+}
+
+export function unloadExternalBookmarks({ commit }) {
+    commit('clearExternalBookmarks')
+}
+
+export function loadExternalBookmarks({ commit }, uid) {
+
+    const ref = firebaseDB.ref(`bookmarks/${uid}`)
+    ref.once('value', (snapshot) => {
+        commit('updateExternalBookmarks', snapshot.val())
+    }, error => {
+        commit('updateExternalBookmarks', {})
+        console.error(error)
+    })
 }
 
 export function loadBookmarks({ commit }) {

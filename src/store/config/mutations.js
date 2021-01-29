@@ -27,9 +27,19 @@ export function updateBookmarks(state, payload) {
     LocalStorage.set("currentBookmarks", state.bookmarks)
 }
 
+export function clearExternalBookmarks(state) {
+    state.externalBookmarks = {}
+}
+
+export function updateExternalBookmarks(state, payload) {
+    state.externalBookmarks = {}
+    Object.assign(state.externalBookmarks, payload)
+}
+
 export function setUser(state, user) {
     state.user = {}
     state.user = { ...user }
+    LocalStorage.set("currentUser", user)
 }
 
 export function setEditMode(state, value) {
@@ -38,4 +48,12 @@ export function setEditMode(state, value) {
 
 export function setShowFooterButtons(state, value) {
     state.showFooterButtons = !!value
+}
+
+export function setUserAvatarUrl(state, avatarUrl) {
+    state.user = { ...state.user, avatarUrl }
+    LocalStorage.set("currentUser", state.user)
+}
+export function setExternalAvatarUrl(state, avatarUrl) {
+    state.externalAvatarUrl = avatarUrl
 }

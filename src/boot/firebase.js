@@ -4,6 +4,7 @@ import firebase from "firebase/app"
 // Add the Firebase services that you want to use
 import "firebase/auth"
 import "firebase/database"
+import "firebase/storage"
 
 const firebaseConfig = {
 	apiKey: "AIzaSyA4vu-JJpq7D5vjww2yThN-Js5_M_15hqQ",
@@ -20,8 +21,9 @@ const firebaseApp = firebase.initializeApp(firebaseConfig)
 
 const firebaseAuth = firebaseApp.auth()
 const firebaseDB = firebaseApp.database()
+const firebaseStorage = firebaseApp.storage()
 
-export { firebaseAuth, firebaseDB }
+export { firebaseAuth, firebaseDB, firebaseStorage }
 
 export default ({ store, router }) => {
 
@@ -33,8 +35,9 @@ export default ({ store, router }) => {
 			const { displayName, uid, photoURL } = user
 			store.dispatch("config/setUser", { displayName, uid, photoURL })
 			store.dispatch("config/loadBookmarks")
+			store.dispatch("config/loadUserAvatar")
 
-			!router.currentRoute.name || router.currentRoute.name == "Index" || router.push({ name: "Index" })
+			!router.currentRoute.name || ["Index", "ExternalIndex"].includes(router.currentRoute.name) || router.push({ name: "Index" })
 
 			lastUser == displayName || Notify.create({
 				message: `Olá ${displayName || ''}`,
@@ -44,7 +47,7 @@ export default ({ store, router }) => {
 		} else {
 			store.dispatch("config/setUser", {})
 			store.dispatch("config/unloadBookmarks")
-			!router.currentRoute.name || router.currentRoute.name == "Auth" || router.push({ name: "Auth" })
+			!router.currentRoute.name || ["Auth", "ExternalIndex"].includes(router.currentRoute.name) || router.push({ name: "Auth" })
 		}
 
 	})

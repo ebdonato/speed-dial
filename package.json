@@ -17,7 +17,10 @@
     "@quasar/extras": "^1.0.0",
     "core-js": "^3.6.5",
     "firebase": "^8.2.4",
-    "quasar": "^1.0.0"
+    "quasar": "^1.0.0",
+    "rxjs": "^6.6.3",
+    "vue-rx": "^6.2.0",
+    "vuejs-clipper": "^3.1.2"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",

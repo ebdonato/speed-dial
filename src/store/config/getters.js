@@ -1,6 +1,13 @@
 export function getBookmarks(state) {
     return state.bookmarks
 }
+export function getExternalBookmarks(state) {
+    return state.externalBookmarks
+}
+
+export function getExternalAvatarUrl(state) {
+    return state.externalAvatarUrl
+}
 
 export function hasUser(state) {
     return !!state.user?.uid
