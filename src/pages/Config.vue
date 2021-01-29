@@ -39,7 +39,9 @@
 
             <q-card-actions align="right">
                 <q-btn flat class="small-btn" @click="save">OK</q-btn>
-                <q-btn flat class="small-btn">cancelar</q-btn>
+                <q-btn flat class="small-btn" :to="{ name: 'Auth' }"
+                    >cancelar</q-btn
+                >
             </q-card-actions>
         </q-card>
     </q-page>
@@ -69,6 +71,7 @@ export default {
             }
 
             this.$store.dispatch("config/updateConfig", config)
+            this.$router.push({ name: "Auth" })
         },
         copyLink() {
             copyToClipboard(this.externalLink)
