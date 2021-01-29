@@ -4,7 +4,7 @@
             class="flex flex-center column q-gutter-sm"
             v-if="!(bookmarks == '' && avatar == '')"
         >
-            <div class="text-white text-h4">{{ config.title }}</div>
+            <div class="text-white text-h4">{{ title }}</div>
 
             <q-img
                 :src="avatar"
@@ -12,7 +12,7 @@
                 spinner-color="white"
             />
 
-            <div class="text-grey-6 text-h5">{{ config.subtitle }}</div>
+            <div class="text-grey-6 text-h5">{{ subtitle }}</div>
 
             <q-btn
                 v-if="Object.keys(bookmarks).length <= 0"
@@ -55,11 +55,16 @@ export default {
         avatar() {
             return this.$store.getters["config/getExternalAvatarUrl"]
         },
-        config() {
-            return this.$store.getters["config/getExternalConfig"]
+        title() {
+            return this.$store.getters["config/getExternalConfig"]?.title ?? ""
+        },
+        subtitle() {
+            return (
+                this.$store.getters["config/getExternalConfig"]?.subtitle ?? ""
+            )
         },
     },
-    mounted() {
+    beforeMount() {
         const externalInfo = this.$q.localStorage.getItem(this.id)
 
         if (externalInfo) {
