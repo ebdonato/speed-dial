@@ -38,6 +38,7 @@
                         round
                         icon="edit"
                         size="sm"
+                        :text-color="$q.dark.isActive ? 'white' : 'black'"
                         @click="isEditMode = !isEditMode"
                         aria-label="Alternar modo edição"
                     />
@@ -46,6 +47,7 @@
                         round
                         icon="add"
                         size="sm"
+                        :text-color="$q.dark.isActive ? 'white' : 'black'"
                         :to="{ name: 'NewLink' }"
                         aria-label="Adicionar novo link"
                     />
@@ -86,7 +88,6 @@ export default {
 
             const dialog = this.$q
                 .dialog({
-                    dark: true,
                     title: "Desenvolvido por",
                     message: "Eduardo Batista Donato",
                 })
@@ -110,6 +111,9 @@ export default {
                 }
             }, 1000)
         },
+    },
+    mounted() {
+        this.$q.dark.set(this.$store.getters["config/getConfig"].theme)
     },
 }
 </script>

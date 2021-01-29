@@ -4,7 +4,7 @@
             <q-btn
                 type="a"
                 :href="parseUrl(link.url)"
-                class="text-white std-btn"
+                class="std-btn"
                 :aria-label="link.name"
                 no-caps
                 v-touch-hold.mouse="handleHold"
@@ -20,7 +20,7 @@
         <template v-else>
             <q-btn
                 @click="edit"
-                class="text-white std-btn"
+                class="std-btn"
                 :aria-label="link.name"
                 no-caps
             >

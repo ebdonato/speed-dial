@@ -11,5 +11,8 @@
 <script>
 export default {
     name: "ExternalLayout",
+    mounted() {
+        this.$q.dark.set(this.$store.getters["config/getExternalConfig"].theme)
+    },
 }
 </script>

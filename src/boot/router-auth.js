@@ -1,11 +1,14 @@
 import { LocalStorage } from 'quasar'
+import { defaultConfig } from "assets/default"
 
 export default ({ router, store }) => {
 
   const currentUser = LocalStorage.getItem("currentUser") ?? {}
-  const bookmarks = LocalStorage.getItem("currentBookmarks") ?? {}
+  const currentBookmarks = LocalStorage.getItem("currentBookmarks") ?? {}
+  const currentConfig = LocalStorage.getItem("currentConfig") ?? { ...defaultConfig }
   store.dispatch("config/setUser", currentUser)
-  store.dispatch("config/setBookmarks", bookmarks)
+  store.dispatch("config/setBookmarks", currentBookmarks)
+  store.dispatch("config/setConfig", currentConfig)
 
   router.beforeEach((to, from, next) => {
 

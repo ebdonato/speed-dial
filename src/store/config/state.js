@@ -1,11 +1,13 @@
+import { defaultConfig } from "assets/default"
+
 export default function () {
 	return {
 		externalBookmarks: '',
 		externalAvatarUrl: '',
-		externalConfig: null,
+		externalConfig: { ...defaultConfig },
 		bookmarks: {},
 		user: null,
-		config: null,
+		config: { ...defaultConfig },
 		editMode: false,
 		showFooterButtons: false,
 	}

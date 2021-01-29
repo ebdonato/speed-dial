@@ -34,18 +34,20 @@
             </div>
         </div>
         <div class="column items-center q-gutter-md" v-else>
-            <div class="text-h5 text-white">Olá {{ displayNameUser }}</div>
+            <div class="text-h5">Olá {{ displayNameUser }}</div>
             <q-img
                 :src="avatar"
                 style="border-radius: 100px; max-width: 200px"
                 spinner-color="white"
             >
-                <div class="absolute-bottom text-subtitle1 text-center">
+                <div class="fit flex flex-center full-width">
                     <q-btn
+                        style="width: 100%; height: 100%"
                         round
                         flat
-                        icon="add"
-                        size="sm"
+                        icon="cached"
+                        size="xl"
+                        :text-color="$q.dark.isActive ? 'white' : 'black'"
                         :to="{ name: 'Avatar' }"
                         aria-label="Definir Avatar"
                     />
@@ -54,7 +56,6 @@
             <q-btn
                 outline
                 label="Início"
-                color="white"
                 :to="{ name: 'Index' }"
                 class="std-btn"
                 aria-label="Início"
@@ -62,15 +63,13 @@
             <q-btn
                 outline
                 label="Configurações"
-                color="white"
-                :to="{name: 'Config'}"
+                :to="{ name: 'Config' }"
                 class="std-btn"
                 aria-label="Configurações"
             />
             <q-btn
                 outline
                 label="Sair"
-                color="white"
                 @click="signOut"
                 class="std-btn"
                 aria-label="Logout"

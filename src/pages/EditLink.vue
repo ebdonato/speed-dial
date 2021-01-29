@@ -1,7 +1,7 @@
 <template>
-    <q-page class="flex flex-center">
+    <q-page padding class="flex flex-center">
         <div class="row justify-center" style="width: 100%">
-            <q-card class="bg-secondary text-white col-10 col-md-6">
+            <q-card class="bg-transparent col-12 col-md-6">
                 <q-card-section>
                     <div class="text-h4">Link</div>
                 </q-card-section>
@@ -11,9 +11,7 @@
                         <q-input
                             v-model="bookmark.name"
                             label="Nome"
-                            label-color="white"
                             ref="name"
-                            dark
                             lazy-rules
                             :rules="[
                                 (val) => val.length > 0 || 'Campo Obrigatório',
@@ -22,8 +20,6 @@
                         <q-input
                             v-model="bookmark.url"
                             label="URL"
-                            label-color="white"
-                            dark
                             lazy-rules
                             ref="url"
                             :rules="[
@@ -118,7 +114,6 @@ export default {
         remove() {
             this.$q
                 .dialog({
-                    dark: true,
                     title: "Confirme",
                     message:
                         "Tem certeza que deseja excluir? Não poderá ser desfeito.",
@@ -138,7 +133,6 @@ export default {
         } else {
             this.$q
                 .dialog({
-                    dark: true,
                     title: "Confirme",
                     message:
                         "Alterações não salvas serão perdidas. Tem certeza que deseja sair?",

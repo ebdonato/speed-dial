@@ -1,5 +1,6 @@
-import { uid, Notify, LocalStorage, Loading } from 'quasar'
+import { uid, Notify, LocalStorage, Loading, Dark } from 'quasar'
 import { firebaseDB, firebaseAuth, firebaseStorage } from "boot/firebase"
+import { defaultConfig } from "assets/default"
 
 export function uploadUserAvatar({ commit }, avatarBlob) {
     const user = firebaseAuth.currentUser.uid
@@ -63,6 +64,10 @@ export function setUser({ commit }, user) {
     commit("setUser", user)
 }
 
+export function setConfig({ commit }, config) {
+    commit('updateConfig', config)
+}
+
 export function loadConfig({ commit }, uid = '') {
     const updateIndexedDB = (info) => {
         const externalInfo = LocalStorage.getItem(info.uid) ?? {}
@@ -70,10 +75,9 @@ export function loadConfig({ commit }, uid = '') {
         LocalStorage.set(info.uid, externalInfo)
     }
 
-
     const userUid = uid || firebaseAuth.currentUser.uid
 
-    let config = {}
+    let config = { ...defaultConfig }
 
     const ref = firebaseDB.ref(`config/${userUid}`)
     ref.once('value')
@@ -93,6 +97,8 @@ export function loadConfig({ commit }, uid = '') {
             } else {
                 commit('updateConfig', config)
             }
+
+            Dark.set(config.theme)
         })
 
 }
@@ -114,9 +120,7 @@ export function updateConfig({ commit }, config) {
             commit('updateConfig', config)
         }
     })
-
 }
-
 
 export function setBookmarks({ commit }, bookmarks) {
     commit('updateBookmarks', bookmarks)

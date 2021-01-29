@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import { defaultConfig } from "assets/default"
 export default {
     name: "ExternalIndex",
     props: {
@@ -78,7 +79,7 @@ export default {
             )
             this.$store.commit(
                 "config/updateExternalConfig",
-                externalInfo?.config ?? {}
+                externalInfo?.config ?? { ...defaultConfig }
             )
         }
 

@@ -1,10 +1,9 @@
 <template>
     <q-page padding class="fit column justify-center q-gutter-sm">
-        <div class="text-center text-white text-h4 q-mb-xs">Avatar</div>
+        <div class="text-center text-h4 q-mb-xs">Avatar</div>
         <q-file
             filled
             v-model="selectedFile"
-            dark
             v-if="!selectedFile"
             label="Escolher o arquivo"
         >
@@ -26,34 +25,21 @@
             v-if="selectedFile"
         >
             <q-btn
-                class="text-white std-btn"
+                class="std-btn"
                 aria-label="Recortar"
                 no-caps
                 @click="getResult"
             >
-                <q-avatar
-                    square
-                    text-color="white"
-                    icon="edit"
-                    size="1rem"
-                    class="q-mx-sm"
-                />
+                <q-avatar square icon="edit" size="1rem" class="q-mx-sm" />
                 Recortar
             </q-btn>
             <q-btn
-                class="text-white std-btn"
+                class="std-btn"
                 aria-label="Limpar"
                 no-caps
-                dark
                 @click="selectedFile = null"
             >
-                <q-avatar
-                    square
-                    text-color="white"
-                    icon="clear"
-                    size="1rem"
-                    class="q-mx-sm"
-                />
+                <q-avatar square icon="clear" size="1rem" class="q-mx-sm" />
                 Limpar
             </q-btn>
         </div>
@@ -62,7 +48,6 @@
             <q-btn
                 outline
                 label="Voltar"
-                color="white"
                 class="small-btn"
                 aria-label="white"
                 @click="goBack"
