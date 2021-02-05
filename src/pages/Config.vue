@@ -118,14 +118,21 @@
 
                 <q-separator />
 
-                <q-card-actions align="right">
-                    <q-btn flat class="std-btn" @click="save" label="OK" />
-                    <q-btn
-                        flat
-                        class="std-btn"
-                        :to="{ name: 'Auth' }"
-                        label="Cancelar"
-                    />
+                <q-card-actions align="center">
+                    <div class="q-gutter-sm fit row wrap justify-center">
+                        <q-btn
+                            outline
+                            class="std-btn"
+                            @click="save"
+                            label="OK"
+                        />
+                        <q-btn
+                            outline
+                            class="std-btn"
+                            :to="{ name: 'Auth' }"
+                            label="Cancelar"
+                        />
+                    </div>
                 </q-card-actions>
             </q-card>
         </div>

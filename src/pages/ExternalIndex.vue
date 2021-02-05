@@ -10,6 +10,7 @@
                 :src="avatar"
                 style="border-radius: 100px; max-width: 200px"
                 spinner-color="white"
+                class="shadow-8 q-my-md"
             />
 
             <div class="text-grey-6 text-h5">{{ subtitle }}</div>
