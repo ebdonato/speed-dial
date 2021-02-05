@@ -3,9 +3,8 @@ const defaultConfig = {
     subtitle: '',
     theme: true,
     showIcons: true,
-    primary: '#283c86',
-    secondary: '#136445',
-    accent: '#6d327c'
+    colors: ['#283c86', '#136445', '#6d327c'],
+    gradientDirection: "Diagonal",
 }
 
 export { defaultConfig }

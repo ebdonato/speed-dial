@@ -1,5 +1,5 @@
 <template>
-    <div id="q-app" class="bg-background">
+    <div id="q-app">
         <router-view />
     </div>
 </template>
@@ -21,11 +21,3 @@ export default {
     },
 }
 </script>
-<style scoped lang="sass">
-.bg-background
-    height: 100%
-    width: 100%
-    background: $primary
-    background: -webkit-linear-gradient(to right bottom, $accent, $primary, $secondary)
-    background: linear-gradient(to right bottom, $accent, $primary, $secondary )
-</style>

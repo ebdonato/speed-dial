@@ -1,5 +1,5 @@
 <template>
-    <q-layout view="hHh lpR fFf">
+    <q-layout view="hHh lpR fFf" :style="style">
         <q-header class="bg-transparent" dense>
             <q-toolbar class="row">
                 <q-btn
@@ -58,8 +58,10 @@
 </template>
 
 <script>
+import mixin from "assets/mixin"
 export default {
     name: "MainLayout",
+    mixins: [mixin],
     computed: {
         isEditMode: {
             get() {
@@ -79,6 +81,12 @@ export default {
             return (
                 this.$store.getters["config/getUser"]?.photoURL ||
                 "https://cdn.quasar.dev/img/avatar2.jpg"
+            )
+        },
+        style() {
+            return this.styleBackground(
+                [...this.$store.getters["config/getConfig"].colors],
+                this.$store.getters["config/getConfig"].gradientDirection
             )
         },
     },

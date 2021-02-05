@@ -25,6 +25,7 @@
             v-if="selectedFile"
         >
             <q-btn
+                outline
                 class="std-btn"
                 aria-label="Recortar"
                 no-caps
@@ -34,6 +35,7 @@
                 Recortar
             </q-btn>
             <q-btn
+                outline
                 class="std-btn"
                 aria-label="Limpar"
                 no-caps
@@ -48,7 +50,7 @@
             <q-btn
                 outline
                 label="Voltar"
-                class="small-btn"
+                class="std-btn"
                 aria-label="white"
                 @click="goBack"
             />

@@ -1,5 +1,5 @@
 <template>
-    <q-layout view="hHh lpR fFf">
+    <q-layout view="hHh lpR fFf" :style="style">
         <q-header class="bg-transparent" dense></q-header>
         <q-page-container>
             <router-view />
@@ -9,10 +9,21 @@
 </template>
 
 <script>
+import mixin from "assets/mixin"
 export default {
     name: "ExternalLayout",
+    mixins: [mixin],
     mounted() {
         this.$q.dark.set(this.$store.getters["config/getExternalConfig"].theme)
+    },
+    computed: {
+        style() {
+            return this.styleBackground(
+                [...this.$store.getters["config/getExternalConfig"].colors],
+                this.$store.getters["config/getExternalConfig"]
+                    .gradientDirection
+            )
+        },
     },
 }
 </script>

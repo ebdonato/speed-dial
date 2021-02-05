@@ -45,15 +45,87 @@
                             />
                         </template>
                     </q-input>
+
+                    <q-select
+                        filled
+                        v-model="config.gradientDirection"
+                        :options="['Horizontal', 'Vertical', 'Diagonal']"
+                        label="Direção Gradiente"
+                    />
+
+                    <q-input
+                        filled
+                        class="q-pb-xs"
+                        v-model="selectedColor"
+                        :rules="['anyColor']"
+                        label="Escolha uma cor"
+                    >
+                        <template v-slot:append>
+                            <q-icon name="colorize" class="cursor-pointer">
+                                <q-popup-proxy
+                                    transition-show="scale"
+                                    transition-hide="scale"
+                                >
+                                    <q-color v-model="selectedColor" />
+                                </q-popup-proxy>
+                            </q-icon>
+                        </template>
+
+                        <template v-slot:before>
+                            <q-btn
+                                round
+                                dense
+                                flat
+                                icon="add"
+                                @click="addColor"
+                            />
+                        </template>
+                        <template v-slot:after>
+                            <q-btn
+                                round
+                                dense
+                                flat
+                                icon="add"
+                                @click="addColor"
+                            />
+                        </template>
+                    </q-input>
+                    <div
+                        class="row items-center q-mt-xs"
+                        :style="{
+                            background: 'rgba(255, 255, 255, 0.1)',
+                        }"
+                    >
+                        <div class="q-mr-sm q-pa-sm">Cores:</div>
+
+                        <div
+                            v-for="(color, index) of config.colors"
+                            :key="index"
+                            :style="{ background: config.colors[index] }"
+                            class="q-ma-sm"
+                        >
+                            <q-btn
+                                round
+                                dense
+                                flat
+                                icon="remove"
+                                @click="removeColor(index)"
+                                :disable="!(config.colors.length > 1)"
+                            />
+                        </div>
+                    </div>
                 </q-card-section>
 
                 <q-separator />
 
                 <q-card-actions align="right">
-                    <q-btn flat class="small-btn" @click="save">OK</q-btn>
-                    <q-btn flat class="small-btn" :to="{ name: 'Auth' }"
-                        >Cancelar</q-btn
-                    >
+                    <q-btn flat class="std-btn" @click="save" label="OK" />
+                    <q-btn
+                        flat
+                        class="std-btn"
+                        :to="{ name: 'Auth' }"
+                        label="Cancelar"
+                    />
                 </q-card-actions>
             </q-card>
         </div>
@@ -62,11 +134,13 @@
 
 <script>
 import { copyToClipboard } from "quasar"
+
 export default {
     name: "PageConfig",
     data() {
         return {
             config: {},
+            selectedColor: "#283c86",
         }
     },
     computed: {
@@ -93,6 +167,16 @@ export default {
         },
     },
     methods: {
+        addColor() {
+            const colors = [...this.config.colors]
+            colors.push(this.selectedColor)
+            this.config.colors = [...colors]
+        },
+        removeColor(index) {
+            const colors = [...this.config.colors]
+            colors.splice(index, 1)
+            this.config.colors = [...colors]
+        },
         save() {
             this.$store.dispatch("config/updateConfig", this.config)
             this.$router.push({ name: "Auth" })
