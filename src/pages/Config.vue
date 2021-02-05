@@ -7,10 +7,14 @@
                 </q-card-section>
 
                 <q-card-section class="q-gutter-sm">
-                    <q-input filled v-model="title" label="Título Externo" />
                     <q-input
                         filled
-                        v-model="subtitle"
+                        v-model="config.title"
+                        label="Título Externo"
+                    />
+                    <q-input
+                        filled
+                        v-model="config.subtitle"
                         label="Subtítulo Externo"
                     />
                     <q-select
@@ -18,6 +22,12 @@
                         v-model="themeSelect"
                         :options="['Claro', 'Escuro']"
                         label="Cor do Texto"
+                    />
+                    <q-select
+                        filled
+                        v-model="iconSelect"
+                        :options="['Sim', 'Não']"
+                        label="Mostrar Ícones"
                     />
                     <q-input
                         filled
@@ -42,7 +52,7 @@
                 <q-card-actions align="right">
                     <q-btn flat class="small-btn" @click="save">OK</q-btn>
                     <q-btn flat class="small-btn" :to="{ name: 'Auth' }"
-                        >cancelar</q-btn
+                        >Cancelar</q-btn
                     >
                 </q-card-actions>
             </q-card>
@@ -56,9 +66,7 @@ export default {
     name: "PageConfig",
     data() {
         return {
-            title: "",
-            subtitle: "",
-            theme: true,
+            config: {},
         }
     },
     computed: {
@@ -68,23 +76,25 @@ export default {
         },
         themeSelect: {
             get() {
-                return this.theme ? "Claro" : "Escuro"
+                return this.config.theme ? "Claro" : "Escuro"
             },
             set(value) {
                 this.$q.dark.set(value === "Claro")
-                this.theme = this.$q.dark.isActive
+                this.config.theme = this.$q.dark.isActive
+            },
+        },
+        iconSelect: {
+            get() {
+                return this.config.showIcons ? "Sim" : "Não"
+            },
+            set(value) {
+                this.config.showIcons = value == "Sim"
             },
         },
     },
     methods: {
         save() {
-            const config = {
-                title: this.title,
-                subtitle: this.subtitle,
-                theme: this.theme,
-            }
-
-            this.$store.dispatch("config/updateConfig", config)
+            this.$store.dispatch("config/updateConfig", this.config)
             this.$router.push({ name: "Auth" })
         },
         copyLink() {
@@ -105,11 +115,7 @@ export default {
         },
     },
     mounted() {
-        const config = this.$store.getters["config/getConfig"]
-
-        this.title = config.title
-        this.subtitle = config.subtitle
-        this.theme = config.theme
+        this.config = { ...this.$store.getters["config/getConfig"] }
     },
 }
 </script>

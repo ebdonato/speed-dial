@@ -22,6 +22,7 @@ export function uploadUserAvatar({ commit }, avatarBlob) {
 export function loadUserAvatar({ commit }) {
     const uid = firebaseAuth.currentUser.uid
     const ref = firebaseStorage.ref(`${uid}`)
+
     ref.child('logo.jpg').getDownloadURL()
         .then((url) => {
             commit("setUserAvatarUrl", url)
@@ -29,6 +30,22 @@ export function loadUserAvatar({ commit }) {
         .catch(err => {
             console.error(err)
             commit("setUserAvatarUrl", '')
+        })
+}
+
+export function deleteUserAvatar({ commit }) {
+    const uid = firebaseAuth.currentUser.uid
+    const ref = firebaseStorage.ref(`${uid}`)
+
+    ref.child('logo.jpg').delete()
+        .then(() => {
+            commit("setUserAvatarUrl", '')
+        }).catch(err => {
+            Notify.create({
+                message: "Algo deu errado ao excluir o avatar",
+                color: 'negative'
+            })
+            console.error(err)
         })
 }
 
@@ -47,7 +64,6 @@ export function loadAvatar({ commit }, uid) {
     const ref = firebaseStorage.ref(`${uid}`)
     ref.child('logo.jpg').getDownloadURL()
         .then((url) => {
-
             payload.url = url
         })
         .catch(err => {

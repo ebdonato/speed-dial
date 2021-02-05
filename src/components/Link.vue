@@ -9,7 +9,7 @@
                 no-caps
                 v-touch-hold.mouse="handleHold"
             >
-                <q-avatar size="1rem" square>
+                <q-avatar size="1rem" square v-if="showIcons">
                     <img :src="getIconUrl(link.url)" :alt="link.url" />
                 </q-avatar>
 
@@ -58,6 +58,10 @@ export default {
         editMode: {
             type: Boolean,
             default: false,
+        },
+        showIcons: {
+            type: Boolean,
+            default: true,
         },
     },
     methods: {

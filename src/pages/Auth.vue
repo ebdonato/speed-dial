@@ -42,13 +42,22 @@
             >
                 <div class="fit flex flex-center full-width">
                     <q-btn
-                        style="width: 100%; height: 100%"
                         round
                         flat
                         icon="cached"
                         size="xl"
                         :text-color="$q.dark.isActive ? 'white' : 'black'"
                         :to="{ name: 'Avatar' }"
+                        aria-label="Definir Avatar"
+                    />
+                    <q-btn
+                        v-if="hasAvatar"
+                        round
+                        flat
+                        icon="clear"
+                        size="xl"
+                        :text-color="$q.dark.isActive ? 'white' : 'black'"
+                        @click="deleteAvatar"
                         aria-label="Definir Avatar"
                     />
                 </div>
@@ -128,10 +137,25 @@ export default {
                     })
                 })
         },
+        deleteAvatar() {
+            this.$q
+                .dialog({
+                    title: "Avatar",
+                    message: "Excluir o avatar?",
+                    cancel: true,
+                    persistent: true,
+                })
+                .onOk(() => {
+                    this.$store.dispatch("config/deleteUserAvatar")
+                })
+        },
     },
     computed: {
         hasUser() {
             return this.$store.getters["config/hasUser"]
+        },
+        hasAvatar() {
+            return !!this.$store.getters["config/getUser"].avatarUrl
         },
         avatar() {
             return (
@@ -145,3 +169,4 @@ export default {
     },
 }
 </script>
+

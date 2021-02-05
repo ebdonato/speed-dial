@@ -17,6 +17,7 @@
                 :link="bookmark"
                 :id="key"
                 :editMode="isEditMode"
+                :showIcons="showIcons"
             />
         </div>
     </q-page>
@@ -34,6 +35,9 @@ export default {
         },
         isEditMode() {
             return this.$store.getters["config/isEditMode"]
+        },
+        showIcons() {
+            return this.$store.getters["config/getConfig"]?.showIcons ?? true
         },
     },
 }

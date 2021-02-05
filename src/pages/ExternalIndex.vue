@@ -29,6 +29,7 @@
                     :key="key"
                     :link="bookmark"
                     :id="key"
+                    :showIcons="showIcons"
                 />
             </div>
         </div>
@@ -62,6 +63,12 @@ export default {
         subtitle() {
             return (
                 this.$store.getters["config/getExternalConfig"]?.subtitle ?? ""
+            )
+        },
+        showIcons() {
+            return (
+                this.$store.getters["config/getExternalConfig"]?.showIcons ??
+                true
             )
         },
     },
