@@ -32,3 +32,8 @@ export function getConfig(state) {
 export function getExternalConfig(state) {
     return state.externalConfig
 }
+
+export function getPickedGradientColors(state) {
+    return state.pickedGradient
+
+}

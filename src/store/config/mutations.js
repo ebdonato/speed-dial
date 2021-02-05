@@ -60,6 +60,9 @@ export function updateConfig(state, config) {
     Object.assign(state.config, config)
     LocalStorage.set("currentConfig", state.config)
 }
+export function pickedGradientColors(state, colors) {
+    state.pickedGradient = colors
+}
 
 export function updateExternalConfig(state, config) {
     state.externalConfig = {}

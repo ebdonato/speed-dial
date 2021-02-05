@@ -10,5 +10,6 @@ export default function () {
 		config: { ...defaultConfig },
 		editMode: false,
 		showFooterButtons: false,
+		pickedGradient: []
 	}
 }

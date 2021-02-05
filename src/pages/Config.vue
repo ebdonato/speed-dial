@@ -85,8 +85,8 @@
                                 round
                                 dense
                                 flat
-                                icon="add"
-                                @click="addColor"
+                                icon="dehaze"
+                                :to="{ name: 'Gradients' }"
                             />
                         </template>
                     </q-input>
@@ -200,6 +200,14 @@ export default {
     },
     mounted() {
         this.config = { ...this.$store.getters["config/getConfig"] }
+        const pickedGradientColors = this.$store.getters[
+            "config/getPickedGradientColors"
+        ]
+
+        if (pickedGradientColors.length > 0) {
+            this.config.colors = pickedGradientColors
+            this.$store.commit("config/pickedGradientColors", [])
+        }
     },
 }
 </script>

@@ -10,6 +10,7 @@ const routes = [
       { path: 'auth', component: () => import('pages/Auth.vue'), props: false, name: "Auth" },
       { path: 'config', component: () => import('pages/Config.vue'), props: false, name: "Config" },
       { path: 'avatar', component: () => import('pages/Avatar.vue'), props: false, name: "Avatar" },
+      { path: 'gradients', component: () => import('pages/Gradients.vue'), props: false, name: "Gradients" },
     ]
   },
   {
