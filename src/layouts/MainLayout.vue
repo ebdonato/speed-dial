@@ -94,21 +94,10 @@ export default {
         autoClose() {
             let seconds = 5
 
-            const dialog = this.$q
-                .dialog({
-                    title: "Desenvolvido por",
-                    message: "Eduardo Batista Donato",
-                })
-                .onOk(() => {
-                    // console.log('OK')
-                })
-                .onCancel(() => {
-                    // console.log('Cancel')
-                })
-                .onDismiss(() => {
-                    clearTimeout(timer)
-                    // console.log('I am triggered on both OK and Cancel')
-                })
+            const dialog = this.$q.dialog({
+                title: "Desenvolvido por",
+                message: "Eduardo Batista Donato",
+            })
 
             const timer = setInterval(() => {
                 seconds--

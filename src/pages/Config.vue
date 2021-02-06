@@ -60,7 +60,7 @@
                         :rules="['anyColor']"
                         label="Escolha uma cor"
                     >
-                        <template v-slot:append>
+                        <template v-slot:prepend>
                             <q-icon name="colorize" class="cursor-pointer">
                                 <q-popup-proxy
                                     transition-show="scale"
@@ -71,18 +71,26 @@
                             </q-icon>
                         </template>
 
-                        <template v-slot:before>
-                            <q-btn
-                                round
-                                dense
-                                flat
-                                icon="add"
-                                @click="addColor"
-                            />
-                        </template>
                         <template v-slot:after>
+                            <div
+                                v-for="(color, index) of config.colors"
+                                :key="index"
+                                :style="{
+                                    background: config.colors[index],
+                                    border: 'solid 1px',
+                                }"
+                            >
+                                <q-btn
+                                    round
+                                    dense
+                                    flat
+                                    icon="remove"
+                                    @click="removeColor(index)"
+                                    :disable="!(config.colors.length > 1)"
+                                />
+                            </div>
+                            <q-btn dense flat icon="add" @click="addColor" />
                             <q-btn
-                                round
                                 dense
                                 flat
                                 icon="dehaze"
@@ -95,25 +103,7 @@
                         :style="{
                             background: 'rgba(255, 255, 255, 0.1)',
                         }"
-                    >
-                        <div class="q-mr-sm q-pa-sm">Cores:</div>
-
-                        <div
-                            v-for="(color, index) of config.colors"
-                            :key="index"
-                            :style="{ background: config.colors[index] }"
-                            class="q-ma-sm"
-                        >
-                            <q-btn
-                                round
-                                dense
-                                flat
-                                icon="remove"
-                                @click="removeColor(index)"
-                                :disable="!(config.colors.length > 1)"
-                            />
-                        </div>
-                    </div>
+                    ></div>
                 </q-card-section>
 
                 <q-separator />
@@ -160,8 +150,7 @@ export default {
                 return this.config.theme ? "Claro" : "Escuro"
             },
             set(value) {
-                this.$q.dark.set(value === "Claro")
-                this.config.theme = this.$q.dark.isActive
+                this.config.theme = value === "Claro"
             },
         },
         iconSelect: {
@@ -185,6 +174,7 @@ export default {
             this.config.colors = [...colors]
         },
         save() {
+            this.$q.dark.set(this.config.theme)
             this.$store.dispatch("config/updateConfig", this.config)
             this.$router.push({ name: "Auth" })
         },

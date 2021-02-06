@@ -47,7 +47,6 @@ export function setUserAvatarUrl(state, avatarUrl) {
 }
 
 export function updateExternalBookmarks(state, bookmarks) {
-    state.externalBookmarks = {}
     Object.assign(state.externalBookmarks, bookmarks)
 }
 
@@ -56,7 +55,6 @@ export function setExternalAvatarUrl(state, url) {
 }
 
 export function updateConfig(state, config) {
-    state.config = {}
     Object.assign(state.config, config)
     LocalStorage.set("currentConfig", state.config)
 }
