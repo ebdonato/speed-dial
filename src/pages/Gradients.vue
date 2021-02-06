@@ -68,7 +68,7 @@ export default {
     mounted() {
         this.$store.commit("config/pickedGradientColors", [])
         this.$axios
-            .get("http://uigradients.com/gradients.json")
+            .get("https://uigradients.com/gradients.json")
             .then((response) => {
                 this.gradients = [...response.data]
             })
