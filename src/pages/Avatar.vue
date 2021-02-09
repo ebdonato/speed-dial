@@ -1,60 +1,72 @@
 <template>
-    <q-page padding class="fit column justify-center q-gutter-sm">
-        <div class="text-center text-h4 q-mb-xs">Avatar</div>
-        <q-file
-            filled
-            v-model="selectedFile"
-            v-if="!selectedFile"
-            label="Escolher o arquivo"
-        >
-            <template v-slot:prepend>
-                <q-icon name="attach_file" />
-            </template>
-        </q-file>
+    <q-page padding class="flex flex-center">
+        <q-card>
+            <q-card-section class="fit column justify-center q-gutter-sm">
+                <div class="text-center text-h4 q-mb-xs">Avatar</div>
+                <q-file
+                    filled
+                    v-model="selectedFile"
+                    v-if="!selectedFile"
+                    label="Escolher o arquivo"
+                >
+                    <template v-slot:prepend>
+                        <q-icon name="attach_file" />
+                    </template>
+                </q-file>
 
-        <clipper-fixed
-            class="my-clipper"
-            ref="clipper"
-            :src="imgURL"
-            bg-color="transparent"
-        >
-        </clipper-fixed>
+                <clipper-fixed
+                    class="my-clipper"
+                    ref="clipper"
+                    :src="imgURL"
+                    bg-color="transparent"
+                >
+                </clipper-fixed>
+            </q-card-section>
 
-        <div
-            class="q-gutter-sm q-mt-sm fit row wrap justify-center"
-            v-if="selectedFile"
-        >
-            <q-btn
-                outline
-                class="std-btn"
-                aria-label="Recortar"
-                no-caps
-                @click="getResult"
-            >
-                <q-avatar square icon="edit" size="1rem" class="q-mx-sm" />
-                Recortar
-            </q-btn>
-            <q-btn
-                outline
-                class="std-btn"
-                aria-label="Limpar"
-                no-caps
-                @click="selectedFile = null"
-            >
-                <q-avatar square icon="clear" size="1rem" class="q-mx-sm" />
-                Limpar
-            </q-btn>
-        </div>
+            <q-card-actions>
+                <template v-if="selectedFile">
+                    <q-btn
+                        outline
+                        class="std-btn"
+                        aria-label="Recortar"
+                        no-caps
+                        @click="getResult"
+                    >
+                        <q-avatar
+                            square
+                            icon="edit"
+                            size="1rem"
+                            class="q-mx-sm"
+                        />
+                        Recortar
+                    </q-btn>
+                    <q-btn
+                        outline
+                        class="std-btn"
+                        aria-label="Limpar"
+                        no-caps
+                        @click="selectedFile = null"
+                    >
+                        <q-avatar
+                            square
+                            icon="clear"
+                            size="1rem"
+                            class="q-mx-sm"
+                        />
+                        Limpar
+                    </q-btn>
+                </template>
 
-        <div class="q-gutter-sm q-mt-sm fit row wrap justify-center">
-            <q-btn
-                outline
-                label="Voltar"
-                class="std-btn"
-                aria-label="white"
-                @click="goBack"
-            />
-        </div>
+                <q-btn
+                    v-else
+                    outline
+                    label="Voltar"
+                    class="std-btn"
+                    aria-label="white"
+                    @click="goBack"
+                />
+            </q-card-actions>
+        </q-card>
     </q-page>
 </template>
 

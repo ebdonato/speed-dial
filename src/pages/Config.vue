@@ -1,7 +1,7 @@
 <template>
     <q-page padding class="flex flex-center">
         <div class="row justify-center" style="width: 100%">
-            <q-card class="bg-transparent col-12 col-md-6">
+            <q-card class="col-12 col-md-6">
                 <q-card-section>
                     <div class="text-h6">Configurações</div>
                 </q-card-section>
@@ -109,20 +109,13 @@
                 <q-separator />
 
                 <q-card-actions align="center">
-                    <div class="q-gutter-sm fit row wrap justify-center">
-                        <q-btn
-                            outline
-                            class="std-btn"
-                            @click="save"
-                            label="OK"
-                        />
-                        <q-btn
-                            outline
-                            class="std-btn"
-                            :to="{ name: 'Auth' }"
-                            label="Cancelar"
-                        />
-                    </div>
+                    <q-btn outline class="small-btn" @click="save" label="OK" />
+                    <q-btn
+                        outline
+                        class="small-btn"
+                        :to="{ name: 'Auth' }"
+                        label="Cancelar"
+                    />
                 </q-card-actions>
             </q-card>
         </div>

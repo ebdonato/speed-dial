@@ -1,89 +1,99 @@
 <template>
     <q-page class="flex flex-center">
-        <div class="column items-center" v-if="!hasUser">
-            <img src="icons/favicon-96x96.png" alt="Logo" />
-            <div class="q-mt-sm q-gutter-md">
-                <q-btn
-                    round
-                    color="primary"
-                    icon="ion-logo-github"
-                    aria-label="Login com Github"
-                    @click="githubSignIn"
-                />
-                <q-btn
-                    round
-                    color="primary"
-                    icon="ion-logo-google"
-                    aria-label="Login com Google"
-                    @click="googleSignIn"
-                />
-                <q-btn
-                    round
-                    color="primary"
-                    icon="ion-logo-facebook"
-                    aria-label="Login com Facebook"
-                    @click="facebookSignIn"
-                />
-                <q-btn
-                    round
-                    color="primary"
-                    icon="ion-logo-yahoo"
-                    aria-label="Login com Yahoo"
-                    @click="yahootSignIn"
-                />
-            </div>
-        </div>
-        <div class="column items-center q-gutter-md" v-else>
-            <div class="text-h5">Olá {{ displayNameUser }}</div>
-            <q-img
-                :src="avatar"
-                style="border-radius: 100px; max-width: 200px"
-                spinner-color="white"
-            >
-                <div class="fit flex flex-center full-width">
+        <q-card v-if="!hasUser">
+            <q-card-section class="column items-center">
+                <img src="icons/favicon-96x96.png" alt="Logo" />
+                <div class="q-mt-sm q-gutter-md">
                     <q-btn
                         round
                         flat
-                        icon="cached"
-                        size="xl"
-                        :text-color="$q.dark.isActive ? 'white' : 'black'"
-                        :to="{ name: 'Avatar' }"
-                        aria-label="Definir Avatar"
+                        icon="ion-logo-github"
+                        aria-label="Login com Github"
+                        @click="githubSignIn"
                     />
                     <q-btn
-                        v-if="hasAvatar"
                         round
                         flat
-                        icon="clear"
-                        size="xl"
-                        :text-color="$q.dark.isActive ? 'white' : 'black'"
-                        @click="deleteAvatar"
-                        aria-label="Definir Avatar"
+                        icon="ion-logo-google"
+                        aria-label="Login com Google"
+                        @click="googleSignIn"
+                    />
+                    <q-btn
+                        round
+                        flat
+                        icon="ion-logo-facebook"
+                        aria-label="Login com Facebook"
+                        @click="facebookSignIn"
+                    />
+                    <q-btn
+                        round
+                        flat
+                        icon="ion-logo-yahoo"
+                        aria-label="Login com Yahoo"
+                        @click="yahootSignIn"
                     />
                 </div>
-            </q-img>
-            <q-btn
-                outline
-                label="Início"
-                :to="{ name: 'Index' }"
-                class="std-btn"
-                aria-label="Início"
-            />
-            <q-btn
-                outline
-                label="Configurações"
-                :to="{ name: 'Config' }"
-                class="std-btn"
-                aria-label="Configurações"
-            />
-            <q-btn
-                outline
-                label="Sair"
-                @click="signOut"
-                class="std-btn"
-                aria-label="Logout"
-            />
-        </div>
+            </q-card-section>
+        </q-card>
+        <q-card v-else>
+            <q-card-section class="column items-center q-gutter-md">
+                <div class="text-h5">Olá {{ displayNameUser }}</div>
+                <q-img
+                    :src="avatar"
+                    style="border-radius: 100px; max-width: 200px"
+                    spinner-color="white"
+                >
+                    <div class="fit flex flex-center full-width q-gutter-xs">
+                        <q-btn
+                            round
+                            icon="cached"
+                            size="xl"
+                            :to="{ name: 'Avatar' }"
+                            aria-label="Definir Avatar"
+                            flat
+                        >
+                            <q-tooltip :delay="1000">
+                                Definir Avatar
+                            </q-tooltip>
+                        </q-btn>
+                        <q-btn
+                            v-if="hasAvatar"
+                            round
+                            icon="clear"
+                            size="xl"
+                            @click="deleteAvatar"
+                            aria-label="Remover Avatar"
+                            flat
+                        >
+                            <q-tooltip :delay="1000">
+                                Remover Avatar
+                            </q-tooltip>
+                        </q-btn>
+                    </div>
+                </q-img>
+                <q-btn
+                    outline
+                    label="Início"
+                    :to="{ name: 'Index' }"
+                    class="std-btn"
+                    aria-label="Início"
+                />
+                <q-btn
+                    outline
+                    label="Configurações"
+                    :to="{ name: 'Config' }"
+                    class="std-btn"
+                    aria-label="Configurações"
+                />
+                <q-btn
+                    outline
+                    label="Sair"
+                    @click="signOut"
+                    class="std-btn"
+                    aria-label="Logout"
+                />
+            </q-card-section>
+        </q-card>
     </q-page>
 </template>
 

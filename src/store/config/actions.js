@@ -50,13 +50,6 @@ export function deleteUserAvatar({ commit }) {
 }
 
 export function loadAvatar({ commit }, uid) {
-
-    const updateIndexedDB = (info) => {
-        const externalInfo = LocalStorage.getItem(info.uid) ?? {}
-        externalInfo.url = info.url
-        LocalStorage.set(info.uid, externalInfo)
-    }
-
     const payload = {}
 
     payload.uid = uid
@@ -72,7 +65,6 @@ export function loadAvatar({ commit }, uid) {
         })
         .finally(() => {
             commit("setExternalAvatarUrl", payload.url)
-            updateIndexedDB(payload)
         })
 }
 
@@ -85,12 +77,6 @@ export function setConfig({ commit }, config) {
 }
 
 export function loadConfig({ commit }, uid = '') {
-    const updateIndexedDB = (info) => {
-        const externalInfo = LocalStorage.getItem(info.uid) ?? {}
-        externalInfo.config = info.config
-        LocalStorage.set(info.uid, externalInfo)
-    }
-
     const userUid = uid || firebaseAuth.currentUser.uid
 
     let config = { ...defaultConfig }
@@ -106,10 +92,7 @@ export function loadConfig({ commit }, uid = '') {
         .finally(() => {
             if (uid) {
                 commit('updateExternalConfig', config)
-                updateIndexedDB({
-                    uid,
-                    config
-                })
+
             } else {
                 commit('updateConfig', config)
             }
@@ -146,13 +129,11 @@ export function unloadBookmarks({ commit }) {
     commit('clearBookmarks')
 }
 
-export function loadExternalBookmarks({ commit }, uid) {
+export function unloadConfig({ commit }) {
+    commit('clearConfig')
+}
 
-    const updateIndexedDB = (info) => {
-        const externalInfo = LocalStorage.getItem(info.uid) ?? {}
-        externalInfo.bookmarks = info.bookmarks
-        LocalStorage.set(info.uid, externalInfo)
-    }
+export function loadExternalBookmarks({ commit }, uid) {
 
     const payload = {}
 
@@ -170,7 +151,7 @@ export function loadExternalBookmarks({ commit }, uid) {
         })
         .finally(() => {
             commit('updateExternalBookmarks', payload.bookmarks)
-            updateIndexedDB(payload)
+
         })
 }
 
@@ -182,8 +163,8 @@ export function loadBookmarks({ commit }) {
 
     ref.once('value', (snapshot) => {
         commit('updateBookmarks', snapshot.val())
-
         LocalStorage.set("waitingAuth", false)
+        LocalStorage.remove("waitingAuth")
         Loading.hide()
 
     }, error => {

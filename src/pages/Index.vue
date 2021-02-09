@@ -8,18 +8,19 @@
         >
             <div class="q-ml-sm col-grow">Novo Item</div>
         </q-btn>
-        <div
-            class="flex justify-center items-center content-center q-gutter-md"
-        >
-            <Link
-                v-for="(bookmark, key) in bookmarks"
-                :key="key"
-                :link="bookmark"
-                :id="key"
-                :editMode="isEditMode"
-                :showIcons="showIcons"
-            />
-        </div>
+
+        <q-card class="bg-transparent no-shadow">
+            <q-card-section class="row justify-center q-pa-none">
+                <Link
+                    v-for="(bookmark, key) in bookmarks"
+                    :key="key"
+                    :link="bookmark"
+                    :id="key"
+                    :editMode="isEditMode"
+                    :showIcons="showIcons"
+                />
+            </q-card-section>
+        </q-card>
     </q-page>
 </template>
 

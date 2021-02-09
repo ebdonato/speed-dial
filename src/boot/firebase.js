@@ -48,6 +48,7 @@ export default ({ store, router }) => {
 		} else {
 			store.dispatch("config/setUser", {})
 			store.dispatch("config/unloadBookmarks")
+			store.dispatch("config/unloadConfig")
 			!router.currentRoute.name || ["Auth", "ExternalIndex"].includes(router.currentRoute.name) || router.push({ name: "Auth" })
 		}
 

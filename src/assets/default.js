@@ -5,6 +5,7 @@ const defaultConfig = {
     showIcons: true,
     colors: ['#283c86', '#136445', '#6d327c'],
     gradientDirection: "Diagonal",
+    wallpaper: false
 }
 
 export { defaultConfig }

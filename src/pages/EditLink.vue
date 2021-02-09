@@ -1,7 +1,7 @@
 <template>
     <q-page padding class="flex flex-center">
         <div class="row justify-center" style="width: 100%">
-            <q-card class="bg-transparent col-12 col-md-6">
+            <q-card class="col-12 col-md-6">
                 <q-card-section>
                     <div class="text-h4">Link</div>
                 </q-card-section>

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import { LocalStorage } from 'quasar'
+import { defaultConfig } from "assets/default"
 
 export function addBookmark(state, payload) {
     Vue.set(state.bookmarks, payload.id, payload.bookmark)
@@ -47,6 +48,7 @@ export function setUserAvatarUrl(state, avatarUrl) {
 }
 
 export function updateExternalBookmarks(state, bookmarks) {
+    state.externalBookmarks = {}
     Object.assign(state.externalBookmarks, bookmarks)
 }
 
@@ -58,6 +60,13 @@ export function updateConfig(state, config) {
     Object.assign(state.config, config)
     LocalStorage.set("currentConfig", state.config)
 }
+
+export function clearConfig(state) {
+    state.config = {}
+    Object.assign(state.config, { ...defaultConfig })
+    LocalStorage.set("currentConfig", state.config)
+}
+
 export function pickedGradientColors(state, colors) {
     state.pickedGradient = colors
 }
