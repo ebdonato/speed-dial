@@ -28,6 +28,8 @@
 
 <script>
 import mixin from "assets/mixin"
+import axios from "axios"
+
 export default {
     name: "PageGradients",
     mixins: [mixin],
@@ -67,7 +69,7 @@ export default {
     },
     mounted() {
         this.$store.commit("config/pickedGradientColors", [])
-        this.$axios
+        axios
             .get("https://uigradients.com/gradients.json")
             .then((response) => {
                 this.gradients = [...response.data]

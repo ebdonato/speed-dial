@@ -29,6 +29,12 @@
                         :options="['Sim', 'Não']"
                         label="Mostrar Ícones"
                     />
+                    <q-select
+                        filled
+                        v-model="wallpaperSelect"
+                        :options="['Sim', 'Não']"
+                        label="Mostrar Wallpaper"
+                    />
                     <q-input
                         filled
                         readonly
@@ -152,6 +158,14 @@ export default {
             },
             set(value) {
                 this.config.showIcons = value == "Sim"
+            },
+        },
+        wallpaperSelect: {
+            get() {
+                return this.config.wallpaper ? "Sim" : "Não"
+            },
+            set(value) {
+                this.config.wallpaper = value == "Sim"
             },
         },
     },

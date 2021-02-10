@@ -1,6 +1,7 @@
 import { uid, Notify, LocalStorage, Loading, Dark } from 'quasar'
 import { firebaseDB, firebaseAuth, firebaseStorage } from "boot/firebase"
 import { defaultConfig } from "assets/default"
+import axios from 'axios'
 
 export function uploadUserAvatar({ commit }, avatarBlob) {
     const user = firebaseAuth.currentUser.uid
@@ -249,4 +250,34 @@ export function setEditMode({ commit }, value) {
 
 export function setShowFooterButtons({ commit }, value) {
     commit("setShowFooterButtons", value)
+}
+
+export function loadWallpaper({ commit, state }, imageSize) {
+    const url = `https://picsum.photos/${imageSize.width}/${imageSize.height}`
+
+    if (!state.wallpaper.blob) {
+        axios.get(url, {
+            responseType: "blob",
+            timeout: 120000,
+        })
+            .then((response) => {
+                const payload = { blob: response.data }
+                commit('updateWallpaper', payload)
+                getPicInfo(response.headers["picsum-id"])
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+
+    const getPicInfo = (id) => {
+        axios.get(`https://picsum.photos/id/${id}/info`)
+            .then((response) => {
+                const payload = { info: response.data }
+                commit('updateWallpaper', payload)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
 }

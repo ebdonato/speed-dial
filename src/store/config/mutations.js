@@ -75,3 +75,7 @@ export function updateExternalConfig(state, config) {
     state.externalConfig = {}
     Object.assign(state.externalConfig, config)
 }
+
+export function updateWallpaper(state, payload) {
+    Object.assign(state.wallpaper, payload)
+}

@@ -5,6 +5,7 @@
             type="a"
             :href="parseUrl(link.url)"
             class="std-btn q-ma-xs"
+            :class="colorClass"
             :aria-label="link.name"
             no-caps
             v-touch-hold.mouse="handleHold"
@@ -19,6 +20,7 @@
             v-else
             @click="edit"
             class="std-btn q-ma-xs"
+            :class="colorClass"
             :aria-label="link.name"
             no-caps
         >
@@ -52,6 +54,14 @@ export default {
                 }
             },
         },
+        transparentButton: {
+            type: Boolean,
+            default: true,
+        },
+        enableHolding: {
+            type: Boolean,
+            default: false,
+        },
         editMode: {
             type: Boolean,
             default: false,
@@ -59,6 +69,14 @@ export default {
         showIcons: {
             type: Boolean,
             default: true,
+        },
+    },
+    computed: {
+        colorClass() {
+            const color = this.$q.dark.isActive
+                ? "bg-dark-translucid"
+                : "bg-translucid"
+            return this.transparentButton ? "bg-transparent" : color
         },
     },
     methods: {
@@ -83,13 +101,18 @@ export default {
             return url.startsWith("http") ? url : `http://${url}`
         },
         handleHold({ evt }) {
-            evt.preventDefault()
-            evt.stopPropagation()
-            this.edit()
+            if (this.enableHolding) {
+                evt.preventDefault()
+                evt.stopPropagation()
+                this.$store.dispatch("config/setEditMode", true)
+                this.edit()
+            }
         },
         edit() {
-            this.$store.dispatch("config/setEditMode", false)
-            this.$router.push(`edit/${this.id}`)
+            if (this.$store.getters["config/isEditMode"]) {
+                this.$store.dispatch("config/setEditMode", false)
+                this.$router.push(`edit/${this.id}`)
+            }
         },
     },
 }

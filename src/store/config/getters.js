@@ -35,5 +35,11 @@ export function getExternalConfig(state) {
 
 export function getPickedGradientColors(state) {
     return state.pickedGradient
+}
 
+export function getWallpaper(state) {
+    const url = !!state.wallpaper.blob ? `url(${URL.createObjectURL(state.wallpaper.blob)})` : 'none'
+    return {
+        ...state.wallpaper, url
+    }
 }

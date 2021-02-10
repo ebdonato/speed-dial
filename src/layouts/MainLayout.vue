@@ -1,5 +1,5 @@
 <template>
-    <q-layout view="hHh lpR fFf" :style="style">
+    <q-layout view="lhh LpR lff" :style="style">
         <q-header class="bg-transparent" dense>
             <q-toolbar class="row">
                 <q-btn
@@ -41,6 +41,25 @@
                         :text-color="$q.dark.isActive ? 'white' : 'black'"
                         @click="isEditMode = !isEditMode"
                         aria-label="Alternar modo edição"
+                    >
+                        <q-tooltip
+                            :delay="1000"
+                            anchor="center right"
+                            self="center left"
+                        >
+                            Editar Links
+                        </q-tooltip>
+                    </q-btn>
+                    <q-space />
+                    <q-btn
+                        v-if="showWallpaper && wallpaperInfo.info"
+                        size="sm"
+                        flat
+                        :label="`Foto de ${wallpaperInfo.info.author}`"
+                        type="a"
+                        :href="wallpaperInfo.info.url"
+                        target="_blank"
+                        :text-color="$q.dark.isActive ? 'white' : 'black'"
                     />
                     <q-space />
                     <q-btn
@@ -50,7 +69,15 @@
                         :text-color="$q.dark.isActive ? 'white' : 'black'"
                         :to="{ name: 'NewLink' }"
                         aria-label="Adicionar novo link"
-                    />
+                    >
+                        <q-tooltip
+                            :delay="1000"
+                            anchor="center left"
+                            self="center right"
+                        >
+                            Novo Link
+                        </q-tooltip>
+                    </q-btn>
                 </template>
             </q-toolbar>
         </q-footer>
@@ -59,6 +86,7 @@
 
 <script>
 import mixin from "assets/mixin"
+
 export default {
     name: "MainLayout",
     mixins: [mixin],
@@ -77,6 +105,12 @@ export default {
         hasUser() {
             return this.$store.getters["config/hasUser"]
         },
+        showWallpaper() {
+            return (
+                !!this.$store.getters["config/getConfig"].wallpaper &&
+                this.$store.getters["config/getWallpaper"].blob
+            )
+        },
         photoUser() {
             return (
                 this.$store.getters["config/getUser"]?.photoURL ||
@@ -84,10 +118,12 @@ export default {
             )
         },
         style() {
-            return this.styleBackground(
-                [...this.$store.getters["config/getConfig"].colors],
-                this.$store.getters["config/getConfig"].gradientDirection
-            )
+            return this.showWallpaper
+                ? this.styleWallpaper()
+                : this.styleBackground(
+                      [...this.$store.getters["config/getConfig"].colors],
+                      this.$store.getters["config/getConfig"].gradientDirection
+                  )
         },
     },
     methods: {

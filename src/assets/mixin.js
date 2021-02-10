@@ -1,4 +1,9 @@
 export default {
+    computed: {
+        wallpaperInfo() {
+            return this.$store.getters["config/getWallpaper"]
+        }
+    },
     methods: {
         styleBackground(colors, gradientDirection) {
             const colorsString = (colorsArr) => {
@@ -30,5 +35,14 @@ export default {
                 width: " 100%",
             }
         },
+        styleWallpaper() {
+            return {
+                'background-image': this.wallpaperInfo ? this.wallpaperInfo.url : 'none',
+                'background-repeat': 'no-repeat',
+                'background-size': 'cover',
+                'padding-left': 0,
+                'padding-right': 0,
+            }
+        }
     }
 }

@@ -1,36 +1,45 @@
 <template>
-    <q-page padding class="flex flex-center">
+    <q-page class="flex flex-center" ref="externalIndexPage">
         <div
-            class="flex flex-center column q-gutter-sm"
+            class="flex flex-center column"
             v-if="!(bookmarks == '' && avatar == '')"
         >
-            <div class="text-white text-h4">{{ title }}</div>
+            <div
+                class="text-h4 full-width q-pa-sm text-center"
+                :class="colorClass"
+                v-if="title"
+            >
+                {{ title }}
+            </div>
+            <div
+                class="text-h6 full-width q-pa-xs text-center"
+                :class="colorClass"
+                v-if="subtitle"
+            >
+                {{ subtitle }}
+            </div>
 
             <q-img
                 :src="avatar"
                 style="border-radius: 100px; max-width: 200px"
                 spinner-color="white"
                 class="shadow-8 q-my-md"
+                v-if="avatar"
             />
-
-            <div class="text-grey-6 text-h5">{{ subtitle }}</div>
-
             <q-btn
                 v-if="Object.keys(bookmarks).length <= 0"
-                class="text-white std-btn q-mt-sm"
+                class="text-white std-btn q-mt-sm q-px-xl"
             >
                 <div class="q-ml-sm col-grow">Nenhum Link</div>
             </q-btn>
-
-            <div
-                class="flex justify-center items-center content-center q-gutter-md q-mt-sm"
-            >
+            <div class="row justify-center q-pa-none q-mt-sm">
                 <Link
                     v-for="(bookmark, key) in bookmarks"
                     :key="key"
                     :link="bookmark"
                     :id="key"
                     :showIcons="showIcons"
+                    :transparentButton="!wallpaper"
                 />
             </div>
         </div>
@@ -39,7 +48,11 @@
 </template>
 
 <script>
+import { dom } from "quasar"
+const { height, width } = dom
+
 import { defaultConfig } from "assets/default"
+
 export default {
     name: "ExternalIndex",
     props: {
@@ -72,6 +85,27 @@ export default {
                 true
             )
         },
+        wallpaper() {
+            return (
+                !!this.$store.getters["config/getExternalConfig"].wallpaper &&
+                !!this.$store.getters["config/getWallpaper"].blob
+            )
+        },
+        colorClass() {
+            const color = this.$q.dark.isActive
+                ? "bg-dark-translucid"
+                : "bg-translucid"
+            return this.wallpaper ? color : "bg-transparent"
+        },
+    },
+    mounted() {
+        const pageHeight = height(this.$refs.externalIndexPage.$el)
+        const pageWidth = width(this.$refs.externalIndexPage.$el)
+
+        this.$store.dispatch("config/loadWallpaper", {
+            height: pageHeight,
+            width: pageWidth,
+        })
     },
     beforeMount() {
         const externalInfo = this.$q.localStorage.getItem(this.id)

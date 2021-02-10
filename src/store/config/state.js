@@ -10,6 +10,10 @@ export default function () {
 		config: { ...defaultConfig },
 		editMode: false,
 		showFooterButtons: false,
-		pickedGradient: []
+		pickedGradient: [],
+		wallpaper: {
+			info: null,
+			blob: null
+		}
 	}
 }
