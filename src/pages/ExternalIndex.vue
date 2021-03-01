@@ -4,6 +4,13 @@
             class="flex flex-center column"
             v-if="!(bookmarks == '' && avatar == '')"
         >
+            <q-img
+                :src="avatar"
+                style="border-radius: 100px; max-width: 200px"
+                spinner-color="white"
+                class="shadow-8 q-my-md"
+                v-if="avatar"
+            />
             <div
                 class="text-h4 full-width q-pa-sm text-center"
                 :class="colorClass"
@@ -18,14 +25,6 @@
             >
                 {{ subtitle }}
             </div>
-
-            <q-img
-                :src="avatar"
-                style="border-radius: 100px; max-width: 200px"
-                spinner-color="white"
-                class="shadow-8 q-my-md"
-                v-if="avatar"
-            />
             <q-btn
                 v-if="Object.keys(bookmarks).length <= 0"
                 class="text-white std-btn q-mt-sm q-px-xl"
@@ -35,9 +34,9 @@
             <div class="row justify-center q-pa-none q-mt-sm">
                 <Link
                     v-for="(bookmark, key) in bookmarks"
-                    :key="key"
+                    :key="bookmark.key"
                     :link="bookmark"
-                    :id="key"
+                    :id="bookmark.key"
                     :showIcons="showIcons"
                     :transparentButton="!wallpaper"
                 />
@@ -52,6 +51,7 @@ import { dom } from "quasar"
 const { height, width } = dom
 
 import { defaultConfig } from "assets/default"
+import { productName } from "../../package.json"
 
 export default {
     name: "ExternalIndex",
@@ -61,12 +61,32 @@ export default {
             required: true,
         },
     },
+    data() {
+        return {
+            productName,
+        }
+    },
+    updated() {
+        if (this.title) {
+            document.title = `${this.title} - ${this.productName}`
+        } else {
+            document.title = this.productName
+        }
+    },
     components: {
         Link: () => import("components/Link"),
     },
     computed: {
         bookmarks() {
-            return this.$store.getters["config/getExternalBookmarks"]
+            const links = this.$store.getters["config/getExternalBookmarks"]
+            return Object.keys(links)
+                .map((key) => {
+                    return {
+                        ...links[key],
+                        key,
+                    }
+                })
+                .sort((a, b) => (a?.index ?? 0) - (b?.index ?? 0))
         },
         avatar() {
             return this.$store.getters["config/getExternalAvatarUrl"]

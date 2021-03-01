@@ -4,7 +4,7 @@
             <q-toolbar class="row">
                 <q-btn
                     flat
-                    label="Speed Dial 1982"
+                    :label="productName"
                     no-caps
                     text-color="grey-8"
                     @click="autoClose"
@@ -19,6 +19,14 @@
                     <q-avatar size="sm">
                         <img :src="photoUser" alt="Avatar" />
                     </q-avatar>
+
+                    <q-tooltip
+                        :delay="1000"
+                        anchor="center left"
+                        self="center right"
+                    >
+                        Configurações
+                    </q-tooltip>
                 </q-btn>
             </q-toolbar>
         </q-header>
@@ -86,10 +94,16 @@
 
 <script>
 import mixin from "assets/mixin"
+import { productName } from "../../package.json"
 
 export default {
     name: "MainLayout",
     mixins: [mixin],
+    data() {
+        return {
+            productName,
+        }
+    },
     computed: {
         isEditMode: {
             get() {
@@ -147,6 +161,7 @@ export default {
     },
     mounted() {
         this.$q.dark.set(this.$store.getters["config/getConfig"].theme)
+        document.title = this.productName
     },
 }
 </script>

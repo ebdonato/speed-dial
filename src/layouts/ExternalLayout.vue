@@ -21,21 +21,15 @@
 
 <script>
 import mixin from "assets/mixin"
+
 export default {
     name: "ExternalLayout",
     mixins: [mixin],
+
     mounted() {
         this.$q.dark.set(this.$store.getters["config/getExternalConfig"].theme)
     },
     computed: {
-        title() {
-            return this.$store.getters["config/getExternalConfig"]?.title ?? ""
-        },
-        subtitle() {
-            return (
-                this.$store.getters["config/getExternalConfig"]?.subtitle ?? ""
-            )
-        },
         showWallpaper() {
             return (
                 !!this.$store.getters["config/getExternalConfig"].wallpaper &&

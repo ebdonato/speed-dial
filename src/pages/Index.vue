@@ -9,24 +9,27 @@
             <div class="q-ml-sm col-grow">Novo Item</div>
         </q-btn>
 
-        <q-card class="no-shadow bg-transparent">
-            <q-card-section class="row justify-center q-pa-none">
-                <Link
-                    v-for="(bookmark, key) in bookmarks"
-                    :key="key"
-                    :link="bookmark"
-                    :id="key"
-                    :editMode="isEditMode"
-                    :showIcons="showIcons"
-                    :transparentButton="!wallpaper"
-                    :enableHolding="true"
-                />
-            </q-card-section>
-        </q-card>
+        <draggable
+            handle=".handle"
+            class="row justify-center q-pa-none"
+            v-model="bookmarks"
+        >
+            <Link
+                v-for="bookmark in bookmarks"
+                :key="bookmark.key"
+                :link="bookmark"
+                :id="bookmark.key"
+                :editMode="isEditMode"
+                :showIcons="showIcons"
+                :transparentButton="!wallpaper"
+                :enableHolding="true"
+            />
+        </draggable>
     </q-page>
 </template>
 
 <script>
+import draggable from "vuedraggable"
 import { dom } from "quasar"
 const { height, width } = dom
 
@@ -34,10 +37,33 @@ export default {
     name: "PageIndex",
     components: {
         Link: () => import("components/Link"),
+        draggable,
     },
     computed: {
-        bookmarks() {
-            return this.$store.getters["config/getBookmarks"]
+        bookmarks: {
+            set(value) {
+                const sortedBookmarks = value.map((el, index) => {
+                    return {
+                        ...el,
+                        index,
+                    }
+                })
+                this.$store.dispatch(
+                    "config/setBookmarksFromArray",
+                    sortedBookmarks
+                )
+            },
+            get() {
+                const links = this.$store.getters["config/getBookmarks"]
+                return Object.keys(links)
+                    .map((key) => {
+                        return {
+                            ...links[key],
+                            key,
+                        }
+                    })
+                    .sort((a, b) => (a?.index ?? 0) - (b?.index ?? 0))
+            },
         },
         isEditMode() {
             return this.$store.getters["config/isEditMode"]

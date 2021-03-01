@@ -1,6 +1,6 @@
-# Speed Dial (speed-dial)
+# Links da Babi (speed-dial)
 
-Speed Dial for Browser New Tabs
+Links da Babi is Speed Dial for Browser New Tabs or for Network Social Profile/Bio Links
 
 ## Install the dependencies
 ```bash
@@ -29,6 +29,7 @@ See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
 {
   "rules": {
     "bookmarks": {
+       ".indexOn": ["index"],
        "$uid": {
         ".read": true,
         ".write": "auth.uid == $uid"

@@ -61,10 +61,12 @@ export default {
     data() {
         return {
             bookmark: {
+                index: 0,
                 name: "",
                 url: "",
             },
             initialBookmark: {
+                index: 0,
                 name: "",
                 url: "",
             },
@@ -92,13 +94,10 @@ export default {
             this.$router.push({ name: "Index" })
         },
         save() {
-            // this.$refs.name.validate()
-            // this.$refs.url.validate()
-
-            // if (!this.$refs.name.hasError && !this.$refs.url.hasError) {
             const payload = {
                 id: this.id,
                 bookmark: {
+                    index: this.bookmark.index,
                     name: this.bookmark.name,
                     url: this.bookmark.url,
                 },
@@ -106,7 +105,6 @@ export default {
             this.backup()
             this.$store.dispatch("config/updateBookmark", payload)
             this.exit()
-            //}
         },
         cancel() {
             this.exit()
@@ -148,13 +146,22 @@ export default {
         }
     },
     mounted() {
-        if (this.id) {
-            const bookmark = this.$store.getters["config/getBookmarks"][this.id]
+        const bookmarks = this.$store.getters["config/getBookmarks"]
 
-            this.bookmark.name = bookmark.name
-            this.bookmark.url = bookmark.url
+        if (this.id) {
+            this.bookmark.index = bookmarks[this.id]?.index ?? 0
+            this.bookmark.name = bookmarks[this.id].name
+            this.bookmark.url = bookmarks[this.id].url
 
             this.backup()
+        } else {
+            const maxIndex = Object.values(bookmarks).reduce((max, el) => {
+                const currentIndex = el?.index ?? 0
+
+                return currentIndex > max ? currentIndex : max
+            }, 0)
+            this.bookmark.index = maxIndex + 1
+            this.initialBookmark.index = maxIndex + 1
         }
     },
 }

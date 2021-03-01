@@ -26,13 +26,19 @@
         >
             <q-avatar
                 square
-                color="red"
                 text-color="white"
                 icon="edit"
                 size="1rem"
                 class="q-mr-xs"
             />
             <div class="q-ml-sm col-grow">{{ link.name }}</div>
+            <q-avatar
+                square
+                text-color="white"
+                icon="menu"
+                size="1rem"
+                class="q-mr-xs handle"
+            />
         </q-btn>
     </div>
 </template>
@@ -49,6 +55,7 @@ export default {
             type: Object,
             default: function () {
                 return {
+                    index: 0,
                     name: "stackoverflow",
                     url: "www.stackoverflow.com",
                 }

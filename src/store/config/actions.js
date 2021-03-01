@@ -126,6 +126,19 @@ export function setBookmarks({ commit }, bookmarks) {
     commit('updateBookmarks', bookmarks)
 }
 
+export function setBookmarksFromArray({ commit, dispatch }, bookmarksArray) {
+    const bookmarks = bookmarksArray.reduce((acc, bookmark) => {
+        const payload = {}
+        payload[bookmark.key] = { ...bookmark }
+        delete payload[bookmark.key].key
+        Object.assign(acc, payload)
+        return acc
+    }, {})
+
+    commit('updateBookmarks', bookmarks)
+    dispatch('updateBookmarks', bookmarks)
+}
+
 export function unloadBookmarks({ commit }) {
     commit('clearBookmarks')
 }
@@ -160,7 +173,7 @@ export function loadBookmarks({ commit }) {
 
     const user = firebaseAuth.currentUser.uid
 
-    const ref = firebaseDB.ref(`bookmarks/${user}`)
+    const ref = firebaseDB.ref(`bookmarks/${user}`).orderByChild('index')
 
     ref.once('value', (snapshot) => {
         commit('updateBookmarks', snapshot.val())
@@ -239,6 +252,27 @@ export function updateBookmark({ }, payload) {
     })
 
 }
+
+export function updateBookmarks({ }, payload) {
+    const user = firebaseAuth.currentUser.uid
+
+    const ref = firebaseDB.ref(`bookmarks/${user}`)
+
+    ref.set(payload, error => {
+        if (error) {
+            console.error(error)
+        }
+        else {
+            Notify.create({
+                message: 'Links atualizados',
+                color: 'primary'
+            })
+        }
+    })
+
+}
+
+
 
 export function toggleEditMode({ commit, state }) {
     commit("setEditMode", !state.editMode)

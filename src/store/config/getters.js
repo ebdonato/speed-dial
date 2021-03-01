@@ -1,6 +1,7 @@
 export function getBookmarks(state) {
     return state.bookmarks
 }
+
 export function getExternalBookmarks(state) {
     return state.externalBookmarks
 }
