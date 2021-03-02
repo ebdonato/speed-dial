@@ -1,37 +1,14 @@
 <template>
-    <div>
-        <q-btn
-            v-if="!editMode"
-            type="a"
-            :href="parseUrl(link.url)"
-            class="std-btn q-ma-xs"
-            :class="colorClass"
-            :aria-label="link.name"
-            no-caps
-            v-touch-hold.mouse="handleHold"
-        >
-            <q-avatar size="1rem" square v-if="showIcons">
-                <img :src="getIconUrl(link.url)" :alt="link.url" />
-            </q-avatar>
-
-            <div class="q-ml-sm col-grow">{{ link.name }}</div>
-        </q-btn>
-        <q-btn
-            v-else
-            @click="edit"
-            class="std-btn q-ma-xs"
-            :class="colorClass"
-            :aria-label="link.name"
-            no-caps
-        >
-            <q-avatar
-                square
-                text-color="white"
-                icon="edit"
-                size="1rem"
-                class="q-mr-xs"
-            />
-            <div class="q-ml-sm col-grow">{{ link.name }}</div>
+    <q-btn
+        @click="clickButton"
+        class="std-btn q-ma-xs"
+        :class="colorClass"
+        :aria-label="link.name"
+        no-caps
+        v-touch-hold.mouse="handleHold"
+        :ripple="false"
+    >
+        <div v-if="editMode">
             <q-avatar
                 square
                 text-color="white"
@@ -39,8 +16,15 @@
                 size="1rem"
                 class="q-mr-xs handle"
             />
-        </q-btn>
-    </div>
+        </div>
+        <div v-else>
+            <q-avatar size="1rem" square v-if="showIcons">
+                <img :src="getIconUrl(link.url)" :alt="link.url" />
+            </q-avatar>
+        </div>
+
+        <div class="q-ml-sm col-grow">{{ link.name }}</div>
+    </q-btn>
 </template>
 
 <script>
@@ -108,20 +92,28 @@ export default {
             return url.startsWith("http") ? url : `http://${url}`
         },
         handleHold({ evt }) {
-            if (this.enableHolding) {
+            if (this.enableHolding && !this.editMode) {
                 evt.preventDefault()
                 evt.stopPropagation()
                 this.$store.dispatch("config/setEditMode", true)
-                this.edit()
+                this.clickButton()
             }
         },
-        edit() {
-            if (this.$store.getters["config/isEditMode"]) {
+        clickButton() {
+            if (this.editMode) {
                 this.$store.dispatch("config/setEditMode", false)
                 this.$router.push(`edit/${this.id}`)
+            } else {
+                window.location = this.link.url
             }
         },
     },
 }
 </script>
 
+<style lang="sass">
+.sortable-ghost
+    opacity: 0
+.sortable-drag
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3)
+</style>
