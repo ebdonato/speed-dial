@@ -9,11 +9,7 @@
             <div class="q-ml-sm col-grow">Novo Item</div>
         </q-btn>
 
-        <draggable
-            handle=".handle"
-            class="row justify-center q-pa-none"
-            v-model="bookmarks"
-        >
+        <draggable handle=".handle" class="row justify-center q-pa-none" v-model="bookmarks">
             <Link
                 v-for="bookmark in bookmarks"
                 :key="bookmark.key"
@@ -48,10 +44,7 @@ export default {
                         index,
                     }
                 })
-                this.$store.dispatch(
-                    "config/setBookmarksFromArray",
-                    sortedBookmarks
-                )
+                this.$store.dispatch("config/setBookmarksFromArray", sortedBookmarks)
             },
             get() {
                 const links = this.$store.getters["config/getBookmarks"]
@@ -73,8 +66,7 @@ export default {
         },
         wallpaper() {
             return (
-                !!this.$store.getters["config/getConfig"].wallpaper &&
-                this.$store.getters["config/getWallpaper"].blob
+                !!this.$store.getters["config/getConfig"].wallpaper && this.$store.getters["config/getWallpaper"].blob
             )
         },
     },

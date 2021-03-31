@@ -2,40 +2,21 @@
     <q-layout view="lhh LpR lff" :style="style">
         <q-header class="bg-transparent" dense>
             <q-toolbar class="row">
-                <q-btn
-                    flat
-                    :label="productName"
-                    no-caps
-                    text-color="grey-8"
-                    @click="autoClose"
-                />
+                <q-btn flat :label="productName" no-caps text-color="grey-8" @click="autoClose" />
                 <q-space />
-                <q-btn
-                    round
-                    :to="{ name: 'Auth' }"
-                    v-if="hasUser && showFooterButtons"
-                    size="xs"
-                >
+                <q-btn round :to="{ name: 'Auth' }" v-if="hasUser && showFooterButtons" size="xs">
                     <q-avatar size="sm">
                         <img :src="photoUser" alt="Avatar" />
                     </q-avatar>
 
-                    <q-tooltip
-                        :delay="1000"
-                        anchor="center left"
-                        self="center right"
-                    >
+                    <q-tooltip :delay="1000" anchor="center left" self="center right">
                         Configurações
                     </q-tooltip>
                 </q-btn>
             </q-toolbar>
         </q-header>
         <q-page-container>
-            <transition
-                mode="out-in"
-                enter-active-class="animated fadeIn"
-                leave-active-class="animated fadeOut"
-            >
+            <transition mode="out-in" enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
                 <router-view />
             </transition>
         </q-page-container>
@@ -50,11 +31,7 @@
                         @click="isEditMode = !isEditMode"
                         aria-label="Alternar modo edição"
                     >
-                        <q-tooltip
-                            :delay="1000"
-                            anchor="center right"
-                            self="center left"
-                        >
+                        <q-tooltip :delay="1000" anchor="center right" self="center left">
                             Editar Links
                         </q-tooltip>
                     </q-btn>
@@ -78,11 +55,7 @@
                         :to="{ name: 'NewLink' }"
                         aria-label="Adicionar novo link"
                     >
-                        <q-tooltip
-                            :delay="1000"
-                            anchor="center left"
-                            self="center right"
-                        >
+                        <q-tooltip :delay="1000" anchor="center left" self="center right">
                             Novo Link
                         </q-tooltip>
                     </q-btn>
@@ -121,15 +94,11 @@ export default {
         },
         showWallpaper() {
             return (
-                !!this.$store.getters["config/getConfig"].wallpaper &&
-                this.$store.getters["config/getWallpaper"].blob
+                !!this.$store.getters["config/getConfig"].wallpaper && this.$store.getters["config/getWallpaper"].blob
             )
         },
         photoUser() {
-            return (
-                this.$store.getters["config/getUser"]?.photoURL ||
-                "https://cdn.quasar.dev/img/avatar2.jpg"
-            )
+            return this.$store.getters["config/getUser"]?.photoURL || "https://cdn.quasar.dev/img/avatar2.jpg"
         },
         style() {
             return this.showWallpaper
