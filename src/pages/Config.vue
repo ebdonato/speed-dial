@@ -31,6 +31,12 @@
                     />
                     <q-select
                         filled
+                        v-model="buttonOutlineSelect"
+                        :options="['Sim', 'Não']"
+                        label="Mostrar Bordas"
+                    />
+                    <q-select
+                        filled
                         v-model="wallpaperSelect"
                         :options="['Sim', 'Não']"
                         label="Mostrar Wallpaper"
@@ -83,7 +89,7 @@
                                 :key="index"
                                 :style="{
                                     background: config.colors[index],
-                                    border: 'solid 1px',
+                                    border: 'solid 1px'
                                 }"
                             >
                                 <q-btn
@@ -107,7 +113,7 @@
                     <div
                         class="row items-center q-mt-xs"
                         :style="{
-                            background: 'rgba(255, 255, 255, 0.1)',
+                            background: 'rgba(255, 255, 255, 0.1)'
                         }"
                     ></div>
                 </q-card-section>
@@ -129,89 +135,97 @@
 </template>
 
 <script>
-import { copyToClipboard } from "quasar"
+import { copyToClipboard } from "quasar";
 
 export default {
     name: "PageConfig",
     data() {
         return {
             config: {},
-            selectedColor: "#283c86",
-        }
+            selectedColor: "#283c86"
+        };
     },
     computed: {
         externalLink() {
-            const uid = this.$store.getters["config/getUser"].uid
-            return `${window.location.origin}/#/uid/${uid}`
+            const uid = this.$store.getters["config/getUser"].uid;
+            return `${window.location.origin}/#/uid/${uid}`;
         },
         themeSelect: {
             get() {
-                return this.config.theme ? "Claro" : "Escuro"
+                return this.config.theme ? "Claro" : "Escuro";
             },
             set(value) {
-                this.config.theme = value === "Claro"
-            },
+                this.config.theme = value === "Claro";
+            }
         },
         iconSelect: {
             get() {
-                return this.config.showIcons ? "Sim" : "Não"
+                return this.config.showIcons ? "Sim" : "Não";
             },
             set(value) {
-                this.config.showIcons = value == "Sim"
-            },
+                this.config.showIcons = value == "Sim";
+            }
         },
         wallpaperSelect: {
             get() {
-                return this.config.wallpaper ? "Sim" : "Não"
+                return this.config.wallpaper ? "Sim" : "Não";
             },
             set(value) {
-                this.config.wallpaper = value == "Sim"
-            },
+                this.config.wallpaper = value == "Sim";
+            }
         },
+        buttonOutlineSelect: {
+            get() {
+                return this.config.buttonOutline ? "Sim" : "Não";
+            },
+            set(value) {
+                this.config.buttonOutline = value == "Sim";
+            }
+        }
     },
     methods: {
         addColor() {
-            const colors = [...this.config.colors]
-            colors.push(this.selectedColor)
-            this.config.colors = [...colors]
+            const colors = [...this.config.colors];
+            colors.push(this.selectedColor);
+            this.config.colors = [...colors];
         },
         removeColor(index) {
-            const colors = [...this.config.colors]
-            colors.splice(index, 1)
-            this.config.colors = [...colors]
+            const colors = [...this.config.colors];
+            colors.splice(index, 1);
+            this.config.colors = [...colors];
         },
         save() {
-            this.$q.dark.set(this.config.theme)
-            this.$store.dispatch("config/updateConfig", this.config)
-            this.$router.push({ name: "Auth" })
+            this.$q.dark.set(this.config.theme);
+            this.$store.dispatch("config/updateConfig", this.config);
+            this.$router.push({ name: "Auth" });
         },
         copyLink() {
             copyToClipboard(this.externalLink)
                 .then(() => {
                     this.$q.notify({
                         message: "Link copiado para a área de transferência!",
-                        color: "positive",
-                    })
+                        color: "positive"
+                    });
                 })
-                .catch((error) => {
-                    console.error(error)
+                .catch(error => {
+                    console.error(error);
                     this.$q.notify({
                         message: "Algo deu errado",
-                        color: "negative",
-                    })
-                })
-        },
-    },
-    mounted() {
-        this.config = { ...this.$store.getters["config/getConfig"] }
-        const pickedGradientColors = this.$store.getters[
-            "config/getPickedGradientColors"
-        ]
-
-        if (pickedGradientColors.length > 0) {
-            this.config.colors = pickedGradientColors
-            this.$store.commit("config/pickedGradientColors", [])
+                        color: "negative"
+                    });
+                });
         }
     },
-}
+    mounted() {
+        this.config = { ...this.$store.getters["config/getConfig"] };
+        const pickedGradientColors = this.$store.getters[
+            "config/getPickedGradientColors"
+        ];
+
+        if (pickedGradientColors.length > 0) {
+            this.config.colors = pickedGradientColors;
+            this.$store.commit("config/pickedGradientColors", []);
+        }
+    }
+};
 </script>

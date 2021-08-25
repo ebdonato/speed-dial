@@ -7,6 +7,7 @@
         no-caps
         v-touch-hold.mouse="handleHold"
         :ripple="false"
+        :outline="buttonOutline"
     >
         <div v-if="editMode">
             <q-avatar
@@ -33,82 +34,86 @@ export default {
     props: {
         id: {
             type: String,
-            default: "",
+            default: ""
         },
         link: {
             type: Object,
-            default: function () {
+            default: function() {
                 return {
                     index: 0,
                     name: "stackoverflow",
-                    url: "www.stackoverflow.com",
-                }
-            },
+                    url: "www.stackoverflow.com"
+                };
+            }
         },
         transparentButton: {
             type: Boolean,
-            default: true,
+            default: true
         },
         enableHolding: {
             type: Boolean,
-            default: false,
+            default: false
         },
         editMode: {
             type: Boolean,
-            default: false,
+            default: false
         },
         showIcons: {
             type: Boolean,
-            default: true,
+            default: true
         },
+        buttonOutline: {
+            type: Boolean,
+            default: false
+        }
     },
     computed: {
         colorClass() {
             const color = this.$q.dark.isActive
                 ? "bg-dark-translucid"
-                : "bg-translucid"
-            return this.transparentButton ? "bg-transparent" : color
-        },
+                : "bg-translucid";
+            return this.transparentButton ? "bg-transparent" : color;
+        }
     },
     methods: {
         getIconUrl(url) {
-            let startPosition = url.indexOf("://")
-            startPosition = startPosition < 0 ? 0 : startPosition + 3
+            let startPosition = url.indexOf("://");
+            startPosition = startPosition < 0 ? 0 : startPosition + 3;
             // console.log(startPosition)
 
-            let endPosition = url.indexOf("/", startPosition)
-            endPosition = endPosition < 0 ? url.length : endPosition + 1
+            let endPosition = url.indexOf("/", startPosition);
+            endPosition = endPosition < 0 ? url.length : endPosition + 1;
             // console.log(endPosition)
 
             const newUrl =
                 "https://www.google.com/s2/favicons?sz=64&domain_url=" +
                 (startPosition ? "" : "https://") +
-                url.substr(0, endPosition)
+                url.substr(0, endPosition);
             // console.log(newUrl)
 
-            return newUrl
+            return newUrl;
         },
         parseUrl(url) {
-            return url.startsWith("http") ? url : `http://${url}`
+            return url.startsWith("http") ? url : `http://${url}`;
         },
         handleHold({ evt }) {
             if (this.enableHolding && !this.editMode) {
-                evt.preventDefault()
-                evt.stopPropagation()
-                this.$store.dispatch("config/setEditMode", true)
-                this.clickButton()
+                evt.preventDefault();
+                evt.stopPropagation();
+                this.$store.dispatch("config/setEditMode", true);
+                this.clickButton();
             }
         },
         clickButton() {
             if (this.editMode) {
-                this.$store.dispatch("config/setEditMode", false)
-                this.$router.push(`edit/${this.id}`)
+                this.$store.dispatch("config/setEditMode", false);
+                this.$router.push(`edit/${this.id}`);
             } else {
-                window.location = this.link.url
+                window.location = this.link.url;
             }
-        },
-    },
-}
+        }
+    }
+};
 </script>
 
 <style lang="sass">

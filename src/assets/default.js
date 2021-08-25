@@ -1,11 +1,12 @@
 const defaultConfig = {
-    title: '',
-    subtitle: '',
+    title: "",
+    subtitle: "",
     theme: true,
     showIcons: true,
-    colors: ['#283c86', '#136445', '#6d327c'],
+    colors: ["#283c86", "#136445", "#6d327c"],
     gradientDirection: "Diagonal",
-    wallpaper: false
-}
+    wallpaper: false,
+    buttonOutline: false
+};
 
-export { defaultConfig }
+export { defaultConfig };

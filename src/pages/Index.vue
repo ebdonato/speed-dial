@@ -9,7 +9,11 @@
             <div class="q-ml-sm col-grow">Novo Item</div>
         </q-btn>
 
-        <draggable handle=".handle" class="row justify-center q-pa-none" v-model="bookmarks">
+        <draggable
+            handle=".handle"
+            class="row justify-center q-pa-none"
+            v-model="bookmarks"
+        >
             <Link
                 v-for="bookmark in bookmarks"
                 :key="bookmark.key"
@@ -19,21 +23,22 @@
                 :showIcons="showIcons"
                 :transparentButton="!wallpaper"
                 :enableHolding="true"
+                :buttonOutline="buttonOutline"
             />
         </draggable>
     </q-page>
 </template>
 
 <script>
-import draggable from "vuedraggable"
-import { dom } from "quasar"
-const { height, width } = dom
+import draggable from "vuedraggable";
+import { dom } from "quasar";
+const { height, width } = dom;
 
 export default {
     name: "PageIndex",
     components: {
         Link: () => import("components/Link"),
-        draggable,
+        draggable
     },
     computed: {
         bookmarks: {
@@ -41,43 +46,52 @@ export default {
                 const sortedBookmarks = value.map((el, index) => {
                     return {
                         ...el,
-                        index,
-                    }
-                })
-                this.$store.dispatch("config/setBookmarksFromArray", sortedBookmarks)
+                        index
+                    };
+                });
+                this.$store.dispatch(
+                    "config/setBookmarksFromArray",
+                    sortedBookmarks
+                );
             },
             get() {
-                const links = this.$store.getters["config/getBookmarks"]
+                const links = this.$store.getters["config/getBookmarks"];
                 return Object.keys(links)
-                    .map((key) => {
+                    .map(key => {
                         return {
                             ...links[key],
-                            key,
-                        }
+                            key
+                        };
                     })
-                    .sort((a, b) => (a?.index ?? 0) - (b?.index ?? 0))
-            },
+                    .sort((a, b) => (a?.index ?? 0) - (b?.index ?? 0));
+            }
         },
         isEditMode() {
-            return this.$store.getters["config/isEditMode"]
+            return this.$store.getters["config/isEditMode"];
         },
         showIcons() {
-            return this.$store.getters["config/getConfig"]?.showIcons ?? true
+            return this.$store.getters["config/getConfig"]?.showIcons ?? true;
+        },
+        buttonOutline() {
+            return (
+                this.$store.getters["config/getConfig"]?.buttonOutline ?? false
+            );
         },
         wallpaper() {
             return (
-                !!this.$store.getters["config/getConfig"].wallpaper && this.$store.getters["config/getWallpaper"].blob
-            )
-        },
+                !!this.$store.getters["config/getConfig"].wallpaper &&
+                this.$store.getters["config/getWallpaper"].blob
+            );
+        }
     },
     mounted() {
-        const pageHeight = height(this.$refs.indexPage.$el)
-        const pageWidth = width(this.$refs.indexPage.$el)
+        const pageHeight = height(this.$refs.indexPage.$el);
+        const pageWidth = width(this.$refs.indexPage.$el);
 
         this.$store.dispatch("config/loadWallpaper", {
             height: pageHeight,
-            width: pageWidth,
-        })
-    },
-}
+            width: pageWidth
+        });
+    }
+};
 </script>
